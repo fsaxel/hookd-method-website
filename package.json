@@ -16,9 +16,10 @@
     "framer-motion": "latest",
     "lucide-react": "latest"
   },
-  "devDependencies": {
-    "tailwindcss": "latest",
-    "postcss": "latest",
-    "autoprefixer": "latest"
-  }
+"devDependencies": {
+  "@tailwindcss/postcss": "^4.1.7",
+  "tailwindcss": "^4.1.7",
+  "postcss": "^8.5.3",
+  "vite": "^6.3.5",
+  "@vitejs/plugin-react": "^4.4.1"
 }
