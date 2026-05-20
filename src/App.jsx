@@ -267,7 +267,7 @@ export default function App() {
               </span>
               {isES ? "Sistemas de contenido para crecer con retención" : "Content systems for high-retention growth"}
             </div>
-            <h1 className="mx-auto max-w-5xl text-[13vw] font-medium leading-[0.88] tracking-[-0.075em] text-white sm:text-6xl md:text-7xl lg:text-[82px]">
+            <h1 className="mx-auto max-w-[1400px] text-center text-[52px] font-extrabold leading-[0.88] tracking-[-0.08em] text-white sm:text-[72px] md:text-[96px] lg:text-[120px]">
               <span className="block">{isES ? "Dejá de publicar al azar." : "Stop posting randomly."}</span>
               <span className="block text-white">{isES ? "Mantené a tu audiencia" : "Keep your audience"} <span className="inline-block italic tracking-[-0.09em] text-[#ff5a00]">HOOKD</span></span>
             </h1>
