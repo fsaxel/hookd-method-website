@@ -1,7 +1,7 @@
 {
   "name": "hookd-method-website",
-  "private": true,
   "version": "1.0.0",
+  "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -17,7 +17,6 @@
     "lucide-react": "latest"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "latest",
     "tailwindcss": "latest",
     "postcss": "latest",
     "autoprefixer": "latest"
