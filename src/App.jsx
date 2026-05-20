@@ -1,6 +1,19 @@
 import React from "react";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
-import { ArrowRight, Check, Clock, MessageCircle, Play, Zap, PenLine, Film, TrendingUp, CircleDot, ScanLine, BadgeCheck } from "lucide-react";
+import {
+  ArrowRight,
+  Check,
+  Clock,
+  MessageCircle,
+  Play,
+  Zap,
+  PenLine,
+  Film,
+  TrendingUp,
+  CircleDot,
+  ScanLine,
+  BadgeCheck,
+} from "lucide-react";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
@@ -77,9 +90,18 @@ const plans = [
 ];
 
 const faqs = [
-  ["¿Trabajan solo con creadores?", "No. Trabajamos con creadores, marcas personales, startups, negocios y equipos que necesitan producir contenido de forma consistente."],
-  ["¿También hacen estrategia?", "Sí. La idea no es solo editar videos, sino construir un sistema: research, ideas, hooks, guiones, edición y optimización."],
-  ["¿En qué plataformas se enfocan?", "Principalmente TikTok, Instagram Reels, YouTube Shorts y contenido vertical adaptable a varias plataformas."],
+  [
+    "¿Trabajan solo con creadores?",
+    "No. Trabajamos con creadores, marcas personales, startups, negocios y equipos que necesitan producir contenido de forma consistente.",
+  ],
+  [
+    "¿También hacen estrategia?",
+    "Sí. La idea no es solo editar videos, sino construir un sistema: research, ideas, hooks, guiones, edición y optimización.",
+  ],
+  [
+    "¿En qué plataformas se enfocan?",
+    "Principalmente TikTok, Instagram Reels, YouTube Shorts y contenido vertical adaptable a varias plataformas.",
+  ],
   ["¿Pueden usar mi estilo actual?", "Sí. Podemos mantener tu tono y mejorarlo, o construir una identidad nueva desde cero."],
 ];
 
@@ -90,7 +112,7 @@ function MiniCard({ text, i }) {
       whileInView={{ opacity: 1, y: 0, rotate: i % 2 === 0 ? -2 : 2 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: i * 0.03 }}
-      className="relative h-32 min-w-[220px] sm:h-36 sm:min-w-[240px] overflow-hidden rounded-[26px] border border-white/10 bg-[#101010] p-3 shadow-[0_0_80px_rgba(255,90,0,0.10)] transition-all duration-500 hover:-translate-y-2 hover:border-white/15 hover:shadow-[0_0_100px_rgba(255,90,0,0.16)] md:h-44 md:min-w-[300px]"
+      className="relative h-32 min-w-[220px] overflow-hidden rounded-[26px] border border-white/10 bg-[#101010] p-3 shadow-[0_0_80px_rgba(255,90,0,0.10)] transition-all duration-500 hover:-translate-y-2 hover:border-white/15 hover:shadow-[0_0_100px_rgba(255,90,0,0.16)] sm:h-36 sm:min-w-[240px] md:h-44 md:min-w-[300px]"
     >
       <div className="absolute inset-0 bg-white/5" />
       <div className="absolute inset-x-8 top-8 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
@@ -99,7 +121,9 @@ function MiniCard({ text, i }) {
           <span>HOOKD</span>
           <span>SHORT</span>
         </div>
-        <h3 className="max-w-[240px] text-lg font-extrabold sm:text-xl leading-[.9] tracking-[-0.06em] md:text-2xl">{text}</h3>
+        <h3 className="max-w-[240px] text-lg font-extrabold leading-[.9] tracking-[-0.06em] sm:text-xl md:text-2xl">
+          {text}
+        </h3>
         <div className="flex items-center gap-2 text-sm text-white/60">
           <span className="flex h-7 w-7 items-center justify-center rounded-full border border-white/10 bg-[#ff5a00] text-white">
             <Play className="h-3 w-3 fill-white" />
@@ -114,7 +138,9 @@ function MiniCard({ text, i }) {
 function SectionTitle({ eyebrow, title, text, center = false }) {
   return (
     <div className={`${center ? "mx-auto text-center" : ""} mb-8 max-w-3xl`}>
-      <p className="mb-4 inline-flex rounded-full border border-white/10 bg-[#101010] px-4 py-2 text-xs font-extrabold uppercase tracking-[0.22em] text-white/50">{eyebrow}</p>
+      <p className="mb-4 inline-flex rounded-full border border-white/10 bg-[#101010] px-4 py-2 text-xs font-extrabold uppercase tracking-[0.22em] text-white/50">
+        {eyebrow}
+      </p>
       <h2 className="text-2xl font-extrabold leading-[0.95] tracking-[-0.06em] md:text-4xl">{title}</h2>
       {text && <p className="mt-3 text-sm leading-6 text-white/60">{text}</p>}
     </div>
@@ -131,9 +157,7 @@ function AnimatedStat({ value, suffix = "", label }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.6 }}
       transition={{ duration: 0.5 }}
-      onViewportEnter={() => {
-        animate(count, value, { duration: 1.8, ease: "easeOut" });
-      }}
+      onViewportEnter={() => animate(count, value, { duration: 1.8, ease: "easeOut" })}
       className="relative flex min-h-[128px] items-center justify-center overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-br from-white/10 via-white/5 to-white/10 p-5 text-center shadow-[0_0_60px_rgba(255,90,0,0.12)]"
     >
       <div className="absolute right-[-60px] top-[-80px] h-48 w-48 rounded-full bg-[#ff5a00]/25 blur-[76px]" />
@@ -187,33 +211,82 @@ export default function App() {
   const localizedProblems = isES
     ? problems
     : [
-        { icon: ScanLine, title: "Low visibility", text: "You publish valuable content, but people don't get to see it because the opening doesn't capture attention fast enough." },
-        { icon: CircleDot, title: "No clear system", text: "Every video feels like starting from scratch: loose ideas, improvised scripts and editing without a repeatable structure." },
-        { icon: Clock, title: "Wasted time", text: "You spend hours thinking, recording, editing and fixing content that doesn't reflect the effort behind it." },
+        {
+          icon: ScanLine,
+          title: "Low visibility",
+          text: "You publish valuable content, but people don't get to see it because the opening doesn't capture attention fast enough.",
+        },
+        {
+          icon: CircleDot,
+          title: "No clear system",
+          text: "Every video feels like starting from scratch: loose ideas, improvised scripts and editing without a repeatable structure.",
+        },
+        {
+          icon: Clock,
+          title: "Wasted time",
+          text: "You spend hours thinking, recording, editing and fixing content that doesn't reflect the effort behind it.",
+        },
       ];
 
   const localizedSolutions = isES
     ? solutions
     : [
-        { icon: TrendingUp, title: "Hooks designed to retain", text: "We turn ideas into strong, simple and direct openings that give viewers a clear reason to stay." },
-        { icon: PenLine, title: "Structured scripting", text: "We create pieces with rhythm, progression and payoff. We don't write pretty lines: we build videos that move forward." },
-        { icon: Film, title: "Ready-to-post editing", text: "Subtitles, cuts, motion and visual direction so every piece feels native to TikTok, Reels and Shorts." },
+        {
+          icon: TrendingUp,
+          title: "Hooks designed to retain",
+          text: "We turn ideas into strong, simple and direct openings that give viewers a clear reason to stay.",
+        },
+        {
+          icon: PenLine,
+          title: "Structured scripting",
+          text: "We create pieces with rhythm, progression and payoff. We don't write pretty lines: we build videos that move forward.",
+        },
+        {
+          icon: Film,
+          title: "Ready-to-post editing",
+          text: "Subtitles, cuts, motion and visual direction so every piece feels native to TikTok, Reels and Shorts.",
+        },
       ];
 
   const localizedPlans = isES
     ? plans
     : [
-        { name: "Starter", tag: "To start", amount: "8 videos / month", features: ["Initial research", "Short-form scripts", "Vertical editing", "1 revision round"] },
-        { name: "Growth", tag: "Most popular", amount: "16 videos / month", features: ["Monthly strategy", "Weekly research", "Scripts + editing", "Performance optimization"], featured: true },
-        { name: "Scale", tag: "Full system", amount: "30 videos / month", features: ["Full content system", "Consulting", "Analytics review", "Priority delivery"] },
+        {
+          name: "Starter",
+          tag: "To start",
+          amount: "8 videos / month",
+          features: ["Initial research", "Short-form scripts", "Vertical editing", "1 revision round"],
+        },
+        {
+          name: "Growth",
+          tag: "Most popular",
+          amount: "16 videos / month",
+          features: ["Monthly strategy", "Weekly research", "Scripts + editing", "Performance optimization"],
+          featured: true,
+        },
+        {
+          name: "Scale",
+          tag: "Full system",
+          amount: "30 videos / month",
+          features: ["Full content system", "Consulting", "Analytics review", "Priority delivery"],
+        },
       ];
 
   const localizedFaqs = isES
     ? faqs
     : [
-        ["Do you only work with creators?", "No. We work with creators, personal brands, startups, businesses and teams that need to produce content consistently."],
-        ["Do you also handle strategy?", "Yes. The goal is not just to edit videos, but to build a system: research, ideas, hooks, scripts, editing and optimization."],
-        ["Which platforms do you focus on?", "Mainly TikTok, Instagram Reels, YouTube Shorts and vertical content that can be adapted across platforms."],
+        [
+          "Do you only work with creators?",
+          "No. We work with creators, personal brands, startups, businesses and teams that need to produce content consistently.",
+        ],
+        [
+          "Do you also handle strategy?",
+          "Yes. The goal is not just to edit videos, but to build a system: research, ideas, hooks, scripts, editing and optimization.",
+        ],
+        [
+          "Which platforms do you focus on?",
+          "Mainly TikTok, Instagram Reels, YouTube Shorts and vertical content that can be adapted across platforms.",
+        ],
         ["Can you work with my current style?", "Yes. We can keep your tone and improve it, or build a new identity from scratch."],
       ];
 
@@ -222,60 +295,108 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen overflow-hidden bg-[#050505] text-white selection:bg-black/10 scroll-smooth">
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute left-1/2 top-[-20%] h-[720px] w-[720px] -translate-x-1/2 rounded-full bg-[#ff5a00] blur-[180px]" />
-        <div className="absolute bottom-[-15%] right-[-10%] h-[520px] w-[520px] rounded-full bg-[#0b5cff] blur-[170px]" />
-        <div className="absolute inset-0 bg-[#050505]" />
+    <div className="min-h-screen overflow-hidden bg-[#050505] text-white selection:bg-[#ff5a00]/20 scroll-smooth">
+      <div className="pointer-events-none fixed inset-0 overflow-hidden">
+        <div className="absolute left-[-8%] top-[-18%] h-[420px] w-[420px] rounded-full bg-[#ff5a00]/35 blur-[120px] md:h-[620px] md:w-[620px] md:blur-[170px]" />
+        <div className="absolute bottom-[-20%] right-[-12%] h-[360px] w-[360px] rounded-full bg-[#0b5cff]/20 blur-[120px] md:h-[520px] md:w-[520px] md:blur-[170px]" />
+        <div className="absolute inset-0 bg-[#050505]/85" />
       </div>
 
-      <header className="relative z-20 mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-5 md:px-8">
+      <header className="relative z-20 mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:px-5 md:px-8">
         <a href="#" className="flex items-center gap-3">
-          <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-[#050505] text-white shadow-[0_0_40px_rgba(255,255,255,0.12)]">
+          <div className="relative flex h-9 w-9 items-center justify-center rounded-2xl border border-white/10 bg-[#050505] text-white shadow-[0_0_40px_rgba(255,255,255,0.12)] sm:h-11 sm:w-11">
             <div className="absolute -right-1 -top-1 h-3 w-3 rounded-full bg-[#ff5a00]" />
             <Zap className="h-5 w-5" />
           </div>
           <span className="text-sm font-semibold tracking-[-0.03em] text-white sm:text-base">HOOKD METHOD</span>
         </a>
-        <div className="hidden items-center gap-3 md:flex">
+
+        <div className="hidden items-center gap-3 lg:flex">
           <nav className="hidden items-center gap-8 rounded-full border border-white/10 bg-[#101010]/80 px-7 py-3 text-sm font-medium text-white/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl md:flex">
-            <a href="#work" className="hover:text-white">{isES ? "Trabajo" : "Work"}</a>
-            <a href="#problems" className="hover:text-white">{isES ? "Problemas" : "Problems"}</a>
-            <a href="#solution" className="hover:text-white">{isES ? "Solución" : "Solution"}</a>
-            <a href="#offers" className="hover:text-white">{isES ? "Planes" : "Pricing"}</a>
-            <a href="#faq" className="hover:text-white">FAQ</a>
+            <a href="#work" className="hover:text-white">
+              {isES ? "Trabajo" : "Work"}
+            </a>
+            <a href="#problems" className="hover:text-white">
+              {isES ? "Problemas" : "Problems"}
+            </a>
+            <a href="#solution" className="hover:text-white">
+              {isES ? "Solución" : "Solution"}
+            </a>
+            <a href="#offers" className="hover:text-white">
+              {isES ? "Planes" : "Pricing"}
+            </a>
+            <a href="#faq" className="hover:text-white">
+              FAQ
+            </a>
           </nav>
 
           <div className="relative flex items-center rounded-full border border-white/10 bg-[#101010] p-1 text-xs font-bold uppercase tracking-[0.14em] text-white/60">
-            <motion.div layout className={`absolute top-1 h-[32px] w-[44px] rounded-full bg-[#ff5a00] ${isES ? "left-1" : "left-[48px]"}`} transition={{ type: "spring", stiffness: 380, damping: 32 }} />
-            <button onClick={() => setLanguage("es")} className={`relative z-10 w-[44px] rounded-full py-2 transition-colors duration-300 ${isES ? "text-black" : "text-white/50"}`}>ES</button>
-            <button onClick={() => setLanguage("en")} className={`relative z-10 w-[44px] rounded-full py-2 transition-colors duration-300 ${!isES ? "text-black" : "text-white/50"}`}>EN</button>
+            <motion.div
+              layout
+              className={`absolute top-1 h-[32px] w-[44px] rounded-full bg-[#ff5a00] ${isES ? "left-1" : "left-[48px]"}`}
+              transition={{ type: "spring", stiffness: 380, damping: 32 }}
+            />
+            <button
+              type="button"
+              onClick={() => setLanguage("es")}
+              className={`relative z-10 w-[44px] rounded-full py-2 transition-colors duration-300 ${isES ? "text-black" : "text-white/50"}`}
+            >
+              ES
+            </button>
+            <button
+              type="button"
+              onClick={() => setLanguage("en")}
+              className={`relative z-10 w-[44px] rounded-full py-2 transition-colors duration-300 ${!isES ? "text-black" : "text-white/50"}`}
+            >
+              EN
+            </button>
           </div>
         </div>
 
-        <button type="button" onClick={openContactModal} className="inline-flex items-center gap-2 rounded-full bg-[#ff5a00] px-4 py-2.5 text-xs font-extrabold text-black sm:px-5 sm:py-3 sm:text-sm shadow-[0_10px_40px_rgba(255,90,0,0.22)] transition-all duration-300 hover:scale-[1.03] hover:bg-[#ff7a1a]">
+        <button
+          type="button"
+          onClick={openContactModal}
+          className="inline-flex items-center gap-2 rounded-full bg-[#ff5a00] px-4 py-2.5 text-xs font-extrabold text-black shadow-[0_10px_40px_rgba(255,90,0,0.22)] transition-all duration-300 hover:scale-[1.03] hover:bg-[#ff7a1a] sm:px-5 sm:py-3 sm:text-sm"
+        >
           {isES ? "Hablemos" : "Let's talk"} <MessageCircle className="h-4 w-4" />
         </button>
       </header>
 
-      <motion.main key={language} animate={{ opacity: 1 }} initial={{ opacity: 0.92 }} transition={{ duration: 0.2 }} className="relative z-10">
+      <motion.main
+        key={language}
+        animate={{ opacity: 1 }}
+        initial={{ opacity: 0.92 }}
+        transition={{ duration: 0.2 }}
+        className="relative z-10"
+      >
         <section className="mx-auto max-w-7xl px-4 pb-8 pt-4 text-center sm:px-5 md:px-8 md:pb-10 md:pt-12">
           <motion.div initial="hidden" animate="visible" variants={fadeUp} transition={{ duration: 0.7 }}>
-            <div className="mx-auto mb-4 inline-flex max-w-[92vw] items-center gap-2 rounded-full border border-[#ff5a00]/20 bg-[#101010] px-3 py-2 text-xs font-medium text-white/70 backdrop-blur sm:px-4 sm:text-sm">
+            <div className="mx-auto mb-4 inline-flex max-w-[90vw] items-center gap-2 rounded-full border border-[#ff5a00]/20 bg-[#101010] px-3 py-2 text-xs font-medium text-white/70 backdrop-blur sm:px-4 sm:text-sm">
               <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#ff5a00]">
                 <BadgeCheck className="h-3 w-3 text-white" />
               </span>
               {isES ? "Sistemas de contenido para crecer con retención" : "Content systems for high-retention growth"}
             </div>
-            <h1 className="mx-auto max-w-[1400px] text-center text-[52px] font-extrabold leading-[0.88] tracking-[-0.08em] text-white sm:text-[72px] md:text-[96px] lg:text-[120px]">
+
+            <h1 className="mx-auto max-w-[1180px] text-center text-[44px] font-extrabold leading-[0.9] tracking-[-0.07em] text-white sm:text-[64px] md:text-[82px] lg:text-[96px] xl:text-[108px]">
               <span className="block">{isES ? "Dejá de publicar al azar." : "Stop posting randomly."}</span>
-              <span className="block text-white">{isES ? "Mantené a tu audiencia" : "Keep your audience"} <span className="inline-block italic tracking-[-0.09em] text-[#ff5a00]">HOOKD</span></span>
+              <span className="mt-2 block text-white">
+                {isES ? "Mantené a tu audiencia" : "Keep your audience"} <span className="inline-block italic tracking-[-0.09em] text-[#ff5a00]">HOOKD</span>
+              </span>
             </h1>
+
             <p className="mx-auto mt-5 max-w-2xl text-sm leading-6 text-white/60 sm:text-base sm:leading-7 md:text-lg">
-              {isES ? "Creamos estrategia, guiones y edición para que creadores y marcas dejen de publicar al azar y empiecen a operar contenido como un sistema." : "We build strategy, scripting and editing systems so creators and brands can stop posting randomly and start operating content like a scalable system."}
+              {isES
+                ? "Creamos estrategia, guiones y edición para que creadores y marcas dejen de publicar al azar y empiecen a operar contenido como un sistema."
+                : "We build strategy, scripting and editing systems so creators and brands can stop posting randomly and start operating content like a scalable system."}
             </p>
+
             <div className="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <button type="button" onClick={openContactModal} className="group inline-flex items-center justify-center gap-2 rounded-full border border-[#ff5a00]/30 bg-[#ff5a00] px-5 py-3 text-sm font-extrabold text-black transition-all duration-300 hover:scale-[1.03] hover:bg-[#ff7a1a] hover:text-black shadow-[0_10px_30px_rgba(255,90,0,0.28)]">
+              <button
+                type="button"
+                onClick={openContactModal}
+                className="group inline-flex items-center justify-center gap-2 rounded-full border border-[#ff5a00]/30 bg-[#ff5a00] px-5 py-3 text-sm font-extrabold text-black shadow-[0_10px_30px_rgba(255,90,0,0.28)] transition-all duration-300 hover:scale-[1.03] hover:bg-[#ff7a1a] hover:text-black"
+              >
                 Get Hookd <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
               </button>
             </div>
@@ -283,8 +404,10 @@ export default function App() {
         </section>
 
         <section id="work" className="relative py-2 md:py-4">
-          <div className="flex w-max animate-[marquee_38s_linear_infinite] gap-5 px-5 md:gap-7 will-change-transform">
-            {[...localizedThumbnails, ...localizedThumbnails].map((t, i) => <MiniCard key={`${t}-${i}`} text={t} i={i} />)}
+          <div className="flex w-max animate-[marquee_38s_linear_infinite] gap-5 px-5 will-change-transform md:gap-7">
+            {[...localizedThumbnails, ...localizedThumbnails].map((t, i) => (
+              <MiniCard key={`${t}-${i}`} text={t} i={i} />
+            ))}
           </div>
         </section>
 
@@ -293,94 +416,292 @@ export default function App() {
             <div className="grid gap-4 lg:grid-cols-[1.05fr_.95fr] lg:items-stretch">
               <div className="relative flex h-full flex-col overflow-hidden rounded-[24px] border border-white/10 bg-[#0b0b0b] p-5 md:p-6">
                 <div className="absolute inset-0 bg-white/[0.03]" />
+
                 <div className="relative mb-5">
-                  <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-white/50">{isES ? "El método HOOKD" : "The HOOKD method"}</p>
+                  <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-white/50">
+                    {isES ? "El método HOOKD" : "The HOOKD method"}
+                  </p>
                   <h3 className="mt-3 max-w-3xl text-2xl font-medium leading-[0.95] tracking-[-0.06em] md:text-4xl">
-                    {isES ? "Si vas a crear," : "If you're going to create,"}<br />
-                    {isES ? "hacelo a la manera " : "do it the "}<span className="italic text-[#ff5a00]">HOOKD</span>{isES ? "." : " way."}
+                    {isES ? "Si vas a crear," : "If you're going to create,"}
+                    <br />
+                    {isES ? "hacelo a la manera " : "do it the "}
+                    <span className="italic text-[#ff5a00]">HOOKD</span>
+                    {isES ? "." : " way."}
                   </h3>
-                  <p className="mt-3 max-w-xl text-sm leading-6 text-white/60">{isES ? "Construimos sistemas de contenido pensados para maximizar retención y generar resultados medibles." : "We build content systems designed to maximize retention and generate measurable results."}</p>
+                  <p className="mt-3 max-w-xl text-sm leading-6 text-white/60">
+                    {isES
+                      ? "Construimos sistemas de contenido pensados para maximizar retención y generar resultados medibles."
+                      : "We build content systems designed to maximize retention and generate measurable results."}
+                  </p>
                 </div>
 
                 <div className="relative mt-auto overflow-hidden rounded-[22px] border border-white/10 bg-[#080808] px-5 pb-4 pt-11">
-                  <div className="absolute left-5 top-4 z-10 rounded-full border border-white/10 bg-[#101010] px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.14em] text-white">{isES ? "Curva de retención fuerte" : "Strong retention curve"}</div>
+                  <div className="absolute left-5 top-4 z-10 rounded-full border border-white/10 bg-[#101010] px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.14em] text-white">
+                    {isES ? "Curva de retención fuerte" : "Strong retention curve"}
+                  </div>
+
                   <div className="relative h-[190px]">
                     <div className="absolute bottom-7 left-10 right-3 top-3 grid grid-rows-5">
                       {["100%", "75%", "50%", "25%", "0%"].map((label) => (
-                        <div key={label} className="relative border-t border-white/10"><span className="absolute -left-10 -top-2 text-[11px] font-bold text-white/60">{label}</span></div>
+                        <div key={label} className="relative border-t border-white/10">
+                          <span className="absolute -left-10 -top-2 text-[11px] font-bold text-white/60">{label}</span>
+                        </div>
                       ))}
                     </div>
+
                     <svg viewBox="0 0 700 230" preserveAspectRatio="none" className="absolute bottom-7 left-10 right-3 top-3 h-[calc(100%-40px)] w-[calc(100%-52px)] overflow-visible">
                       <defs>
-                        <linearGradient id="retentionLine" x1="0" x2="1" y1="0" y2="0"><stop offset="0%" stopColor="#ffffff" /><stop offset="45%" stopColor="#d4d4d4" /><stop offset="100%" stopColor="#ffffff" /></linearGradient>
-                        <linearGradient id="retentionFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stopColor="#ffffff" stopOpacity="0.30" /><stop offset="100%" stopColor="#ffffff" stopOpacity="0" /></linearGradient>
+                        <linearGradient id="retentionLine" x1="0" x2="1" y1="0" y2="0">
+                          <stop offset="0%" stopColor="#ffffff" />
+                          <stop offset="45%" stopColor="#d4d4d4" />
+                          <stop offset="100%" stopColor="#ffffff" />
+                        </linearGradient>
+                        <linearGradient id="retentionFill" x1="0" x2="0" y1="0" y2="1">
+                          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.30" />
+                          <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+                        </linearGradient>
                       </defs>
-                      <motion.path initial={{ d: "M0 26 C90 78 190 118 320 148 C455 174 570 188 700 202 L700 230 L0 230 Z", opacity: 0.35 }} whileInView={{ d: "M0 8 C80 18 150 36 230 50 C345 64 500 70 700 78 L700 230 L0 230 Z", opacity: 1 }} viewport={{ once: true, amount: 0.65 }} transition={{ duration: 1.7, ease: "easeInOut" }} fill="url(#retentionFill)" />
-                      <motion.path initial={{ d: "M0 26 C90 78 190 118 320 148 C455 174 570 188 700 202", opacity: 0.25 }} whileInView={{ d: "M0 8 C80 18 150 36 230 50 C345 64 500 70 700 78", opacity: 1 }} viewport={{ once: true, amount: 0.65 }} transition={{ duration: 1.7, ease: "easeInOut" }} fill="none" stroke="url(#retentionLine)" strokeWidth="8" strokeLinecap="round" />
+                      <motion.path
+                        initial={{ d: "M0 26 C90 78 190 118 320 148 C455 174 570 188 700 202 L700 230 L0 230 Z", opacity: 0.35 }}
+                        whileInView={{ d: "M0 8 C80 18 150 36 230 50 C345 64 500 70 700 78 L700 230 L0 230 Z", opacity: 1 }}
+                        viewport={{ once: true, amount: 0.65 }}
+                        transition={{ duration: 1.7, ease: "easeInOut" }}
+                        fill="url(#retentionFill)"
+                      />
+                      <motion.path
+                        initial={{ d: "M0 26 C90 78 190 118 320 148 C455 174 570 188 700 202", opacity: 0.25 }}
+                        whileInView={{ d: "M0 8 C80 18 150 36 230 50 C345 64 500 70 700 78", opacity: 1 }}
+                        viewport={{ once: true, amount: 0.65 }}
+                        transition={{ duration: 1.7, ease: "easeInOut" }}
+                        fill="none"
+                        stroke="url(#retentionLine)"
+                        strokeWidth="8"
+                        strokeLinecap="round"
+                      />
                     </svg>
-                    <div className="absolute bottom-0 left-10 right-3 flex justify-between text-[11px] font-bold uppercase tracking-[0.14em] text-white/60"><span>0s</span><span>3s</span><span>8s</span><span>15s+</span></div>
+
+                    <div className="absolute bottom-0 left-10 right-3 flex justify-between text-[11px] font-bold uppercase tracking-[0.14em] text-white/60">
+                      <span>0s</span>
+                      <span>3s</span>
+                      <span>8s</span>
+                      <span>15s+</span>
+                    </div>
                   </div>
                 </div>
               </div>
 
               <div className="flex h-full flex-col rounded-[24px] border border-white/10 bg-[#101010] p-5 md:p-6">
                 <div className="mb-5 flex items-start justify-between gap-5">
-                  <div><p className="text-xs font-extrabold uppercase tracking-[0.22em] text-white/60">{isES ? "El sistema" : "The system"}</p><p className="mt-3 max-w-sm text-sm leading-6 text-white/60">{isES ? "El método detrás de cada pieza de contenido que producimos." : "The method behind every piece of content we produce."}</p></div>
+                  <div>
+                    <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-white/60">
+                      {isES ? "El sistema" : "The system"}
+                    </p>
+                    <p className="mt-3 max-w-sm text-sm leading-6 text-white/60">
+                      {isES ? "El método detrás de cada pieza de contenido que producimos." : "The method behind every piece of content we produce."}
+                    </p>
+                  </div>
                   <TrendingUp className="mt-1 h-5 w-5 text-white" />
                 </div>
+
                 <div className="grid flex-1 gap-3">
-                  {(isES ? [
-                    ["01", "Research & estrategia", "Ángulos, formatos y patrones sobre los que vale la pena construir."],
-                    ["02", "Guiones basados en retención", "Hooks, ritmo y payoff estructurados antes de editar."],
-                    ["03", "Edición top-tier", "Visuales y ritmo pensados para el algoritmo."],
-                    ["04", "Optimización post-publicación", "Aprendizajes de performance convertidos en el siguiente batch."],
-                  ] : [
-                    ["01", "Research & strategy", "Angles, formats and patterns worth building around."],
-                    ["02", "Retention-based scripting", "Hooks, pacing and payoff structured before the edit."],
-                    ["03", "Top-tier editing", "Visuals and pacing built for the algorithm."],
-                    ["04", "Post-upload optimization", "Performance learnings turned into the next batch."],
-                  ]).map(([n, title, text]) => (
-                    <motion.div key={title} initial={{ opacity: 0, x: 14 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.65 }} transition={{ duration: 0.45, delay: Number(n) * 0.08 }} className="group rounded-[20px] border border-white/10 bg-[#080808] p-4 transition-all duration-300 hover:border-white/15 hover:bg-white/5 hover:shadow-[0_0_50px_rgba(255,90,0,0.12)]">
-                      <div className="flex items-center gap-4"><div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[16px] border border-white/10 bg-[#ff5a00] text-base font-extrabold text-white transition group-hover:bg-[#ff7a1a] group-hover:text-white">{n}</div><div><h4 className="text-base font-extrabold tracking-[-0.03em] md:text-lg">{title}</h4><p className="mt-1 text-xs leading-5 text-white/60">{text}</p></div></div>
+                  {(isES
+                    ? [
+                        ["01", "Research & estrategia", "Ángulos, formatos y patrones sobre los que vale la pena construir."],
+                        ["02", "Guiones basados en retención", "Hooks, ritmo y payoff estructurados antes de editar."],
+                        ["03", "Edición top-tier", "Visuales y ritmo pensados para el algoritmo."],
+                        ["04", "Optimización post-publicación", "Aprendizajes de performance convertidos en el siguiente batch."],
+                      ]
+                    : [
+                        ["01", "Research & strategy", "Angles, formats and patterns worth building around."],
+                        ["02", "Retention-based scripting", "Hooks, pacing and payoff structured before the edit."],
+                        ["03", "Top-tier editing", "Visuals and pacing built for the algorithm."],
+                        ["04", "Post-upload optimization", "Performance learnings turned into the next batch."],
+                      ]
+                  ).map(([n, title, text]) => (
+                    <motion.div
+                      key={title}
+                      initial={{ opacity: 0, x: 14 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true, amount: 0.65 }}
+                      transition={{ duration: 0.45, delay: Number(n) * 0.08 }}
+                      className="group rounded-[20px] border border-white/10 bg-[#080808] p-4 transition-all duration-300 hover:border-white/15 hover:bg-white/5 hover:shadow-[0_0_50px_rgba(255,90,0,0.12)]"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[16px] border border-white/10 bg-[#ff5a00] text-base font-extrabold text-white transition group-hover:bg-[#ff7a1a] group-hover:text-white">
+                          {n}
+                        </div>
+                        <div>
+                          <h4 className="text-base font-extrabold tracking-[-0.03em] md:text-lg">{title}</h4>
+                          <p className="mt-1 text-xs leading-5 text-white/60">{text}</p>
+                        </div>
+                      </div>
                     </motion.div>
                   ))}
                 </div>
               </div>
             </div>
-            <div className="mt-4 grid gap-4 md:grid-cols-[1.05fr_.95fr]"><AnimatedStat value={200} suffix="+" label={isES ? "visualizaciones generadas" : "video views generated"} /><AnimatedStat value={6} suffix="+" label={isES ? "años en la industria" : "years in the industry"} /></div>
+
+            <div className="mt-4 grid gap-4 md:grid-cols-[1.05fr_.95fr]">
+              <AnimatedStat value={200} suffix="+" label={isES ? "visualizaciones generadas" : "video views generated"} />
+              <AnimatedStat value={6} suffix="+" label={isES ? "años en la industria" : "years in the industry"} />
+            </div>
           </div>
         </section>
 
         <section id="problems" className="mx-auto max-w-7xl px-5 py-10 md:px-8">
-          <SectionTitle eyebrow={isES ? "Tus problemas" : "Your problems"} title={<span className="whitespace-nowrap">{isES ? <>Sabes lo que querés comunicar, pero no sabés <span className="text-[#ff5a00]">cómo</span></> : <>You know what you want to say, but not <span className="text-[#ff5a00]">how</span></>}</span>} text={isES ? "La mayoría de creadores, dueños de negocio y marcas no fallan por la base de su mensaje. Fallan porque su contenido no tiene una estructura y producción que sostenga la atención, lo más importante para las plataformas." : "Most creators, business owners and brands don't fail because of the core of their message. They fail because their content lacks the structure and production needed to sustain attention, the most important signal for platforms."} />
+          <SectionTitle
+            eyebrow={isES ? "Tus problemas" : "Your problems"}
+            title={
+              <span className="block max-w-5xl">
+                {isES ? (
+                  <>
+                    Sabes lo que querés comunicar, pero no sabés <span className="text-[#ff5a00]">cómo</span>
+                  </>
+                ) : (
+                  <>
+                    You know what you want to say, but not <span className="text-[#ff5a00]">how</span>
+                  </>
+                )}
+              </span>
+            }
+            text={
+              isES
+                ? "La mayoría de creadores, dueños de negocio y marcas no fallan por la base de su mensaje. Fallan porque su contenido no tiene una estructura y producción que sostenga la atención, lo más importante para las plataformas."
+                : "Most creators, business owners and brands don't fail because of the core of their message. They fail because their content lacks the structure and production needed to sustain attention, the most important signal for platforms."
+            }
+          />
           <div className="grid gap-6 md:grid-cols-3">
-            {localizedProblems.map((item) => { const Icon = item.icon; return (<motion.div whileHover={{ y: -8 }} key={item.title} className="rounded-[24px] border border-white/10 bg-[#101010] p-5 transition-all duration-500 hover:-translate-y-2 hover:border-white/15 hover:bg-[#151515] hover:shadow-[0_0_80px_rgba(255,90,0,0.10)]"><div className="mb-5 flex h-14 w-14 items-center justify-center rounded-[22px] border border-white/10 bg-[#ff5a00] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"><Icon className="h-6 w-6 stroke-[1.8]" /></div><h3 className="text-xl font-extrabold tracking-[-0.04em]">{item.title}</h3><p className="mt-4 leading-7 text-white/60">{item.text}</p></motion.div>); })}
+            {localizedProblems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <motion.div
+                  whileHover={{ y: -8 }}
+                  key={item.title}
+                  className="rounded-[24px] border border-white/10 bg-[#101010] p-5 transition-all duration-500 hover:-translate-y-2 hover:border-white/15 hover:bg-[#151515] hover:shadow-[0_0_80px_rgba(255,90,0,0.10)]"
+                >
+                  <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-[22px] border border-white/10 bg-[#ff5a00] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+                    <Icon className="h-6 w-6 stroke-[1.8]" />
+                  </div>
+                  <h3 className="text-xl font-extrabold tracking-[-0.04em]">{item.title}</h3>
+                  <p className="mt-4 leading-7 text-white/60">{item.text}</p>
+                </motion.div>
+              );
+            })}
           </div>
         </section>
 
         <section id="solution" className="mx-auto max-w-7xl px-5 py-10 md:px-8">
           <div className="rounded-[28px] border border-white/10 bg-[#101010] p-5 md:p-6">
             <div className="mb-8 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-              <div className="max-w-3xl"><p className="mb-4 inline-flex rounded-full border border-white/10 bg-[#151515] px-4 py-2 text-xs font-extrabold uppercase tracking-[0.22em] text-[#ff5a00]">{isES ? "Nuestra solución" : "Our solution"}</p><h2 className="text-3xl font-extrabold leading-[0.92] tracking-[-0.07em] md:text-5xl">{isES ? <>Un sistema perfeccionado para que tu contenido <span className="text-[#ff5a00]">rinda</span></> : <>A refined system built to make your content <span className="text-[#ff5a00]">perform</span></>}</h2><p className="mt-5 max-w-2xl text-sm leading-7 text-white/60 md:text-base">{isES ? "Research, estrategia, guiones y edición conectados en un mismo flujo para que cada pieza tenga intención, retención y consistencia visual." : "Research, strategy, scripting and editing connected in one workflow so every piece has intention, retention and visual consistency."}</p></div>
-              <button type="button" onClick={openContactModal} className="inline-flex h-fit items-center gap-2 rounded-full bg-[#ff5a00] px-6 py-3 text-sm font-extrabold text-black transition-all duration-300 hover:scale-[1.03] hover:bg-[#ff7a1a]">Get Hookd <ArrowRight className="h-4 w-4" /></button>
+              <div className="max-w-3xl">
+                <p className="mb-4 inline-flex rounded-full border border-white/10 bg-[#151515] px-4 py-2 text-xs font-extrabold uppercase tracking-[0.22em] text-[#ff5a00]">
+                  {isES ? "Nuestra solución" : "Our solution"}
+                </p>
+
+                <h2 className="text-3xl font-extrabold leading-[0.92] tracking-[-0.07em] md:text-5xl">
+                  {isES ? (
+                    <>
+                      Un sistema perfeccionado para que tu contenido <span className="text-[#ff5a00]">rinda</span>
+                    </>
+                  ) : (
+                    <>
+                      A refined system built to make your content <span className="text-[#ff5a00]">perform</span>
+                    </>
+                  )}
+                </h2>
+
+                <p className="mt-5 max-w-2xl text-sm leading-7 text-white/60 md:text-base">
+                  {isES
+                    ? "Research, estrategia, guiones y edición conectados en un mismo flujo para que cada pieza tenga intención, retención y consistencia visual."
+                    : "Research, strategy, scripting and editing connected in one workflow so every piece has intention, retention and visual consistency."}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={openContactModal}
+                className="inline-flex h-fit items-center gap-2 rounded-full bg-[#ff5a00] px-6 py-3 text-sm font-extrabold text-black transition-all duration-300 hover:scale-[1.03] hover:bg-[#ff7a1a]"
+              >
+                Get Hookd <ArrowRight className="h-4 w-4" />
+              </button>
             </div>
+
             <div className="grid gap-4 md:grid-cols-3">
-              {localizedSolutions.map((item, index) => { const Icon = item.icon; return (<motion.div key={item.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.45, delay: index * 0.08 }} className="group rounded-[24px] border border-white/10 bg-[#0b0b0b] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-white/15 hover:bg-[#121212]"><div className="mb-5 flex h-14 w-14 items-center justify-center rounded-[18px] border border-white/10 bg-[#ff5a00] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]"><Icon className="h-6 w-6 stroke-[2]" /></div><div className="mb-3 text-xs font-extrabold uppercase tracking-[0.18em] text-[#ff5a00]">0{index + 1}</div><h3 className="text-2xl font-extrabold leading-[1] tracking-[-0.05em] text-white">{item.title}</h3><p className="mt-4 text-sm leading-7 text-white/60">{item.text}</p></motion.div>); })}
+              {localizedSolutions.map((item, index) => {
+                const Icon = item.icon;
+
+                return (
+                  <motion.div
+                    key={item.title}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.4 }}
+                    transition={{ duration: 0.45, delay: index * 0.08 }}
+                    className="group rounded-[24px] border border-white/10 bg-[#0b0b0b] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-white/15 hover:bg-[#121212]"
+                  >
+                    <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-[18px] border border-white/10 bg-[#ff5a00] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.18)]">
+                      <Icon className="h-6 w-6 stroke-[2]" />
+                    </div>
+
+                    <div className="mb-3 text-xs font-extrabold uppercase tracking-[0.18em] text-[#ff5a00]">0{index + 1}</div>
+
+                    <h3 className="text-2xl font-extrabold leading-[1] tracking-[-0.05em] text-white">{item.title}</h3>
+
+                    <p className="mt-4 text-sm leading-7 text-white/60">{item.text}</p>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </section>
 
         <section id="offers" className="mx-auto max-w-7xl px-5 py-10 md:px-8">
-          <SectionTitle eyebrow={isES ? "Planes" : "Pricing"} title={isES ? "Un plan según tu ritmo de producción." : "A plan built around your production pace."} text={isES ? "Podemos empezar simple o construir un sistema completo de contenido mensual." : "We can start simple or build a complete monthly content system."} center />
+          <SectionTitle
+            eyebrow={isES ? "Planes" : "Pricing"}
+            title={isES ? "Un plan según tu ritmo de producción." : "A plan built around your production pace."}
+            text={isES ? "Podemos empezar simple o construir un sistema completo de contenido mensual." : "We can start simple or build a complete monthly content system."}
+            center
+          />
           <div className="grid gap-6 md:grid-cols-3">
             {localizedPlans.map((plan) => (
-              <motion.div whileHover={{ y: -8 }} key={plan.name} className={`relative rounded-[26px] border p-5 transition-all duration-500 hover:-translate-y-2 ${plan.featured ? "border-[#ff8a45]/20 bg-gradient-to-br from-[#ff5a00] via-[#ff6a1a] to-[#ff7b2f] text-white shadow-[0_0_90px_rgba(255,90,0,0.14)]" : "border-white/10 bg-[#101010] hover:border-white/10"}`}>
-                <div className={`mb-5 inline-flex rounded-full px-4 py-2 text-xs font-extrabold uppercase tracking-[0.16em] ${plan.featured ? "border border-white/15 bg-black/15 text-white backdrop-blur" : "bg-white/5 text-white/60"}`}>{plan.tag}</div>
+              <motion.div
+                whileHover={{ y: -8 }}
+                key={plan.name}
+                className={`relative rounded-[26px] border p-5 transition-all duration-500 hover:-translate-y-2 ${
+                  plan.featured
+                    ? "border-[#ff8a45]/20 bg-gradient-to-br from-[#ff5a00] via-[#ff6a1a] to-[#ff7b2f] text-white shadow-[0_0_90px_rgba(255,90,0,0.14)]"
+                    : "border-white/10 bg-[#101010] hover:border-white/10"
+                }`}
+              >
+                <div
+                  className={`mb-5 inline-flex rounded-full px-4 py-2 text-xs font-extrabold uppercase tracking-[0.16em] ${
+                    plan.featured ? "border border-white/15 bg-black/15 text-white backdrop-blur" : "bg-white/5 text-white/60"
+                  }`}
+                >
+                  {plan.tag}
+                </div>
                 <h3 className="text-2xl font-extrabold tracking-[-0.05em] text-white">{plan.name}</h3>
                 <p className={`mt-3 text-xl font-extrabold tracking-[-0.04em] ${plan.featured ? "text-white/90" : "text-white/50"}`}>{plan.amount}</p>
                 <div className={`my-5 h-px ${plan.featured ? "bg-white/15" : "bg-white/10"}`} />
-                <ul className="space-y-3">{plan.features.map((f) => (<li key={f} className={`flex gap-3 ${plan.featured ? "text-white" : "text-white/60"}`}><Check className={`mt-0.5 h-5 w-5 shrink-0 ${plan.featured ? "text-white" : "text-[#ff5a00]"}`} /> {f}</li>))}</ul>
-                <div className="mt-6 flex justify-start"><button type="button" onClick={openContactModal} className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-extrabold transition-all duration-300 hover:scale-[1.03] ${plan.featured ? "bg-black text-white hover:bg-[#111111]" : "bg-[#ff5a00] text-black hover:bg-[#ff7a1a]"}`}>{isES ? "Hablemos" : "Let's talk"} <ArrowRight className="h-4 w-4" /></button></div>
+                <ul className="space-y-3">
+                  {plan.features.map((f) => (
+                    <li key={f} className={`flex gap-3 ${plan.featured ? "text-white" : "text-white/60"}`}>
+                      <Check className={`mt-0.5 h-5 w-5 shrink-0 ${plan.featured ? "text-white" : "text-[#ff5a00]"}`} /> {f}
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-6 flex justify-start">
+                  <button
+                    type="button"
+                    onClick={openContactModal}
+                    className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-extrabold transition-all duration-300 hover:scale-[1.03] ${
+                      plan.featured ? "bg-black text-white hover:bg-[#111111]" : "bg-[#ff5a00] text-black hover:bg-[#ff7a1a]"
+                    }`}
+                  >
+                    {isES ? "Hablemos" : "Let's talk"} <ArrowRight className="h-4 w-4" />
+                  </button>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -388,37 +709,140 @@ export default function App() {
 
         <section id="faq" className="mx-auto max-w-5xl px-5 py-10 md:px-8">
           <SectionTitle eyebrow="FAQ" title={isES ? "Preguntas frecuentes." : "Frequently asked questions."} center />
-          <div className="grid gap-4">{localizedFaqs.map(([q, a]) => (<div key={q} className="rounded-[28px] border border-white/10 bg-[#101010] p-6"><h3 className="text-xl font-extrabold tracking-[-0.03em]">{q}</h3><p className="mt-3 leading-7 text-white/60">{a}</p></div>))}</div>
+          <div className="grid gap-4">
+            {localizedFaqs.map(([q, a]) => (
+              <div key={q} className="rounded-[28px] border border-white/10 bg-[#101010] p-6">
+                <h3 className="text-xl font-extrabold tracking-[-0.03em]">{q}</h3>
+                <p className="mt-3 leading-7 text-white/60">{a}</p>
+              </div>
+            ))}
+          </div>
         </section>
 
         <section id="contact" className="mx-auto max-w-7xl px-5 py-10 md:px-8">
           <div className="relative overflow-hidden rounded-[26px] border border-white/10 bg-gradient-to-br from-[#151515] via-[#050505] to-[#0b163d] p-6 text-center md:p-10">
             <div className="absolute inset-0 bg-white/5" />
-            <div className="relative mx-auto max-w-4xl"><h2 className="text-3xl font-extrabold leading-[0.9] tracking-[-0.07em] md:text-5xl">{isES ? "Dejá de publicar al azar." : "Stop posting randomly."}</h2><p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-white/80">{isES ? "Empezá con un diagnóstico gratis y vemos cómo convertir tu contenido en un sistema mensual de crecimiento." : "Start with a free diagnosis and we'll show you how to turn your content into a monthly growth system."}</p><div className="mt-6 flex flex-col justify-center gap-4 sm:flex-row"><button type="button" onClick={openContactModal} className="inline-flex items-center justify-center gap-2 rounded-full bg-[#ff5a00] px-8 py-4 font-extrabold text-black transition hover:scale-[1.03]">{isES ? "Enviar mensaje" : "Send message"} <ArrowRight className="h-4 w-4" /></button><a href="https://wa.me/" className="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-[#080808]/70 px-8 py-4 font-extrabold text-white backdrop-blur transition hover:bg-[#080808]">WhatsApp <MessageCircle className="h-4 w-4" /></a></div></div>
+            <div className="relative mx-auto max-w-4xl">
+              <h2 className="text-3xl font-extrabold leading-[0.9] tracking-[-0.07em] md:text-5xl">
+                {isES ? "Dejá de publicar al azar." : "Stop posting randomly."}
+              </h2>
+              <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-white/80">
+                {isES
+                  ? "Empezá con un diagnóstico gratis y vemos cómo convertir tu contenido en un sistema mensual de crecimiento."
+                  : "Start with a free diagnosis and we'll show you how to turn your content into a monthly growth system."}
+              </p>
+              <div className="mt-6 flex flex-col justify-center gap-4 sm:flex-row">
+                <button
+                  type="button"
+                  onClick={openContactModal}
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-[#ff5a00] px-8 py-4 font-extrabold text-black transition hover:scale-[1.03]"
+                >
+                  {isES ? "Enviar mensaje" : "Send message"} <ArrowRight className="h-4 w-4" />
+                </button>
+                <a
+                  href="https://wa.me/"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-[#080808]/70 px-8 py-4 font-extrabold text-white backdrop-blur transition hover:bg-[#080808]"
+                >
+                  WhatsApp <MessageCircle className="h-4 w-4" />
+                </a>
+              </div>
+            </div>
           </div>
         </section>
       </motion.main>
 
       {contactModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 backdrop-blur-sm">
-          <motion.div initial={{ opacity: 0, y: 18, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ duration: 0.25, ease: "easeOut" }} className="w-full max-w-xl rounded-[28px] border border-white/10 bg-[#101010] p-5 shadow-[0_0_120px_rgba(255,90,0,0.18)] md:p-6">
-            <div className="mb-6 flex items-start justify-between gap-4"><div><p className="mb-2 text-xs font-extrabold uppercase tracking-[0.18em] text-[#ff5a00]">{isES ? "Contacto" : "Contact"}</p><h3 className="text-2xl font-extrabold tracking-[-0.05em] text-white">{isES ? "Contanos sobre tu proyecto" : "Tell us about your project"}</h3><p className="mt-2 text-sm leading-6 text-white/60">{isES ? "El mensaje se enviará a hello@hookdmethod.com con copia al equipo." : "Your message will be sent to hello@hookdmethod.com with the team in copy."}</p></div><button type="button" onClick={closeContactModal} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[28px] leading-none text-white transition hover:bg-white/10 pb-[2px]" aria-label="Close contact form">×</button></div>
+          <motion.div
+            initial={{ opacity: 0, y: 18, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="w-full max-w-xl rounded-[28px] border border-white/10 bg-[#101010] p-5 shadow-[0_0_120px_rgba(255,90,0,0.18)] md:p-6"
+          >
+            <div className="mb-6 flex items-start justify-between gap-4">
+              <div>
+                <p className="mb-2 text-xs font-extrabold uppercase tracking-[0.18em] text-[#ff5a00]">{isES ? "Contacto" : "Contact"}</p>
+                <h3 className="text-2xl font-extrabold tracking-[-0.05em] text-white">{isES ? "Contanos sobre tu proyecto" : "Tell us about your project"}</h3>
+                <p className="mt-2 text-sm leading-6 text-white/60">
+                  {isES ? "El mensaje se enviará a hello@hookdmethod.com con copia al equipo." : "Your message will be sent to hello@hookdmethod.com with the team in copy."}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={closeContactModal}
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 pb-[2px] text-[28px] leading-none text-white transition hover:bg-white/10"
+                aria-label="Close contact form"
+              >
+                ×
+              </button>
+            </div>
+
             <form onSubmit={submitContactForm} className="grid gap-4">
-              <label className="grid gap-2 text-sm font-bold text-white">{isES ? "Nombre" : "Name"}<input required value={contactForm.name} onChange={(event) => updateContactForm("name", event.target.value)} className="rounded-2xl border border-white/10 bg-[#080808] px-4 py-3 text-white outline-none transition placeholder:text-white/30 focus:border-[#ff5a00]" placeholder={isES ? "Tu nombre" : "Your name"} /></label>
-              <label className="grid gap-2 text-sm font-bold text-white">{isES ? "Tipo de cuenta" : "Account type"}<div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#080808] transition-all duration-300 focus-within:border-[#ff5a00] focus-within:bg-[#0d0d0d]"><select required value={contactForm.accountType} onChange={(event) => updateContactForm("accountType", event.target.value)} className="w-full appearance-none bg-transparent px-4 py-3 pr-14 text-[15px] font-medium text-white outline-none"><option value="" disabled className="bg-[#101010] text-white/40">{isES ? "Seleccioná una opción" : "Select an option"}</option><option value={isES ? "Creador" : "Creator"} className="bg-[#101010] text-white">{isES ? "Creador" : "Creator"}</option><option value={isES ? "Marca" : "Brand"} className="bg-[#101010] text-white">{isES ? "Marca" : "Brand"}</option><option value={isES ? "Dueño de Negocio" : "Business Owner"} className="bg-[#101010] text-white">{isES ? "Dueño de Negocio" : "Business Owner"}</option></select><div className="pointer-events-none absolute inset-y-0 right-0 flex w-12 items-center justify-center border-l border-white/10 bg-white/[0.03] text-white/60"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg></div></div></label>
-              <label className="grid gap-2 text-sm font-bold text-white">{isES ? "¿Cómo podemos ayudarte?" : "How can we help you?"}<textarea required value={contactForm.message} onChange={(event) => updateContactForm("message", event.target.value)} className="min-h-[140px] resize-none rounded-2xl border border-white/10 bg-[#080808] px-4 py-3 text-white outline-none transition placeholder:text-white/30 focus:border-[#ff5a00]" placeholder={isES ? "Contanos qué necesitás construir, mejorar o escalar." : "Tell us what you need to build, improve or scale."} /></label>
-              <button type="submit" className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-[#ff5a00] px-6 py-3 text-sm font-extrabold text-black transition hover:scale-[1.02] hover:bg-[#ff7a1a]">{isES ? "Enviar mensaje" : "Send message"} <ArrowRight className="h-4 w-4" /></button>
+              <label className="grid gap-2 text-sm font-bold text-white">
+                {isES ? "Nombre" : "Name"}
+                <input
+                  required
+                  value={contactForm.name}
+                  onChange={(event) => updateContactForm("name", event.target.value)}
+                  className="rounded-2xl border border-white/10 bg-[#080808] px-4 py-3 text-white outline-none transition placeholder:text-white/30 focus:border-[#ff5a00]"
+                  placeholder={isES ? "Tu nombre" : "Your name"}
+                />
+              </label>
+
+              <label className="grid gap-2 text-sm font-bold text-white">
+                {isES ? "Tipo de cuenta" : "Account type"}
+                <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#080808] transition-all duration-300 focus-within:border-[#ff5a00] focus-within:bg-[#0d0d0d]">
+                  <select
+                    required
+                    value={contactForm.accountType}
+                    onChange={(event) => updateContactForm("accountType", event.target.value)}
+                    className="w-full appearance-none bg-transparent px-4 py-3 pr-14 text-[15px] font-medium text-white outline-none"
+                  >
+                    <option value="" disabled className="bg-[#101010] text-white/40">
+                      {isES ? "Seleccioná una opción" : "Select an option"}
+                    </option>
+                    <option value={isES ? "Creador" : "Creator"} className="bg-[#101010] text-white">
+                      {isES ? "Creador" : "Creator"}
+                    </option>
+                    <option value={isES ? "Marca" : "Brand"} className="bg-[#101010] text-white">
+                      {isES ? "Marca" : "Brand"}
+                    </option>
+                    <option value={isES ? "Dueño de Negocio" : "Business Owner"} className="bg-[#101010] text-white">
+                      {isES ? "Dueño de Negocio" : "Business Owner"}
+                    </option>
+                  </select>
+
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex w-12 items-center justify-center border-l border-white/10 bg-white/[0.03] text-white/60">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="m6 9 6 6 6-6" />
+                    </svg>
+                  </div>
+                </div>
+              </label>
+
+              <label className="grid gap-2 text-sm font-bold text-white">
+                {isES ? "¿Cómo podemos ayudarte?" : "How can we help you?"}
+                <textarea
+                  required
+                  value={contactForm.message}
+                  onChange={(event) => updateContactForm("message", event.target.value)}
+                  className="min-h-[140px] resize-none rounded-2xl border border-white/10 bg-[#080808] px-4 py-3 text-white outline-none transition placeholder:text-white/30 focus:border-[#ff5a00]"
+                  placeholder={isES ? "Contanos qué necesitás construir, mejorar o escalar." : "Tell us what you need to build, improve or scale."}
+                />
+              </label>
+
+              <button type="submit" className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-[#ff5a00] px-6 py-3 text-sm font-extrabold text-black transition hover:scale-[1.02] hover:bg-[#ff7a1a]">
+                {isES ? "Enviar mensaje" : "Send message"} <ArrowRight className="h-4 w-4" />
+              </button>
             </form>
           </motion.div>
         </div>
       )}
 
-      <footer className="relative z-10 mx-auto flex max-w-7xl flex-col justify-between gap-4 border-t border-white/10 px-5 py-6 text-sm text-white/40 md:flex-row md:px-8"><p>© 2026 HOOKD METHOD</p><p>{isES ? "Contenido que engancha. Sistemas que escalan." : "Content that hooks. Systems that scale."}</p></footer>
-      <style>{`
-        @keyframes marquee { from { transform: translateX(0%); } to { transform: translateX(-50%); } }
-        html { scroll-behavior: smooth; }
-        * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-      `}</style>
+      <footer className="relative z-10 mx-auto flex max-w-7xl flex-col justify-between gap-4 border-t border-white/10 px-5 py-6 text-sm text-white/40 md:flex-row md:px-8">
+        <p>© 2026 HOOKD METHOD</p>
+        <p>{isES ? "Contenido que engancha. Sistemas que escalan." : "Content that hooks. Systems that scale."}</p>
+      </footer>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 {
   "name": "hookd-method-website",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,17 +9,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "framer-motion": "^12.12.1",
-    "lucide-react": "^0.511.0",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "@vitejs/plugin-react": "4.3.4",
+    "vite": "5.4.11",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "framer-motion": "11.11.17",
+    "lucide-react": "0.468.0"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.7",
-    "@vitejs/plugin-react": "^4.4.1",
-    "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.3",
-    "tailwindcss": "^4.1.7",
-    "vite": "^6.3.5"
+    "autoprefixer": "10.4.20",
+    "postcss": "8.4.49",
+    "tailwindcss": "3.4.17"
   }
 }
