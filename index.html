@@ -12,116 +12,128 @@
     <link rel="manifest" href="/favicon/site.webmanifest" />
 
     <link rel="preload" href="/assets/logo.png" as="image" fetchpriority="high" />
-    <link rel="preload" href="/work/video-01.mp4?v=3" as="video" type="video/mp4" fetchpriority="high" />
-    <link rel="preload" href="/work/video-02.mp4?v=3" as="video" type="video/mp4" fetchpriority="high" />
-    <link rel="preload" href="/work/video-03.mp4?v=3" as="video" type="video/mp4" fetchpriority="high" />
-    <link rel="preload" href="/work/video-04.mp4?v=3" as="video" type="video/mp4" fetchpriority="high" />
-    <link rel="preload" href="/work/video-05.mp4?v=3" as="video" type="video/mp4" fetchpriority="high" />
+    <link rel="preload" href="/work/video-01.mp4?v=5" as="video" type="video/mp4" fetchpriority="high" />
+    <link rel="preload" href="/work/video-02.mp4?v=5" as="video" type="video/mp4" fetchpriority="high" />
+    <link rel="preload" href="/work/video-03.mp4?v=5" as="video" type="video/mp4" fetchpriority="high" />
+    <link rel="preload" href="/work/video-04.mp4?v=5" as="video" type="video/mp4" fetchpriority="high" />
+    <link rel="preload" href="/work/video-05.mp4?v=5" as="video" type="video/mp4" fetchpriority="high" />
+    <link rel="preload" href="/work/video-06.mp4?v=5" as="video" type="video/mp4" fetchpriority="high" />
+    <link rel="preload" href="/work/video-07.mp4?v=5" as="video" type="video/mp4" fetchpriority="high" />
+    <link rel="preload" href="/work/video-08.mp4?v=5" as="video" type="video/mp4" fetchpriority="high" />
+    <link rel="preload" href="/work/video-09.mp4?v=5" as="video" type="video/mp4" fetchpriority="high" />
+    <link rel="preload" href="/work/video-10.mp4?v=5" as="video" type="video/mp4" fetchpriority="high" />
+
+    <style>
+      #work {
+        opacity: 0;
+        transition: opacity 260ms ease;
+      }
+
+      body.work-videos-ready #work,
+      body.work-videos-timeout #work {
+        opacity: 1;
+      }
+
+      .marquee-track {
+        animation-duration: 54s !important;
+      }
+
+      @media (max-width: 767px) {
+        .marquee-track {
+          animation-duration: 44s !important;
+        }
+      }
+    </style>
 
     <script>
       (() => {
-        const criticalCount = matchMedia("(max-width: 767px)").matches ? 3 : 5;
-        const criticalSources = Array.from({ length: criticalCount }, (_, i) => `/work/video-${String(i + 1).padStart(2, "0")}.mp4?v=3`);
-        const warmed = new Set();
+        const VERSION = "5";
+        const TOTAL = 10;
+        const urls = Array.from({ length: TOTAL }, (_, i) => `/work/video-${String(i + 1).padStart(2, "0")}.mp4?v=${VERSION}`);
+        const loaded = new Set();
+        const preloaders = [];
+        let ready = false;
 
-        const warmVideo = (src) => {
-          if (!src || warmed.has(src)) return;
-          warmed.add(src);
-          const video = document.createElement("video");
-          video.src = src;
-          video.muted = true;
-          video.defaultMuted = true;
-          video.loop = true;
-          video.playsInline = true;
-          video.preload = "auto";
-          video.load();
-          video.play().then(() => video.pause()).catch(() => {});
-        };
-
-        criticalSources.forEach(warmVideo);
-
-        const restoreSource = (source) => {
-          if (!source || source.getAttribute("src")) return;
-          const src = source.dataset.src;
-          if (!src) return;
-          source.setAttribute("src", src);
-        };
-
-        const deferSource = (video) => {
-          const source = video.querySelector("source");
-          if (!source || source.dataset.src) return;
-          const src = source.getAttribute("src");
-          if (!src) return;
-          source.dataset.src = src;
-          source.removeAttribute("src");
-          try { video.load(); } catch (e) {}
-        };
-
-        const playVideo = (video) => {
-          const source = video.querySelector("source");
-          restoreSource(source);
-          video.muted = true;
-          video.defaultMuted = true;
-          video.playsInline = true;
-          video.loop = true;
-          video.preload = "auto";
-          video.style.transform = "translateZ(0)";
-          video.style.backfaceVisibility = "hidden";
-          try { video.load(); } catch (e) {}
-          video.play().catch(() => {});
-        };
-
-        let hasIntersectionObserver = false;
-        const optimize = () => {
-          const cards = Array.from(document.querySelectorAll(".work-card"));
-          if (!cards.length) return;
-          const videos = cards.map((card) => card.querySelector("video")).filter(Boolean);
-
-          videos.forEach((video, index) => {
+        const markReady = () => {
+          if (ready) return;
+          ready = true;
+          document.body.classList.add("work-videos-ready");
+          document.querySelectorAll("#work video").forEach((video) => {
             video.muted = true;
             video.defaultMuted = true;
             video.playsInline = true;
-            video.style.transform = "translateZ(0)";
-            video.style.backfaceVisibility = "hidden";
-
-            if (index < criticalCount) {
-              playVideo(video);
-            } else {
-              video.pause();
-              video.preload = "none";
-              deferSource(video);
-            }
+            video.loop = true;
+            video.play().catch(() => {});
           });
-
-          if (!hasIntersectionObserver && "IntersectionObserver" in window) {
-            hasIntersectionObserver = true;
-            const io = new IntersectionObserver((entries) => {
-              entries.forEach((entry) => {
-                if (!entry.isIntersecting) return;
-                const video = entry.target.querySelector("video");
-                if (video) playVideo(video);
-              });
-            }, { rootMargin: "1200px 1200px", threshold: 0.01 });
-            cards.forEach((card) => io.observe(card));
-          }
-
-          const queueRest = () => {
-            videos.slice(criticalCount).forEach((video, index) => {
-              setTimeout(() => {
-                const source = video.querySelector("source");
-                const src = source && (source.dataset.src || source.getAttribute("src"));
-                if (src) warmVideo(src);
-              }, index * 220);
-            });
-          };
-
-          if ("requestIdleCallback" in window) requestIdleCallback(queueRest, { timeout: 1800 });
-          else setTimeout(queueRest, 1200);
         };
 
-        new MutationObserver(optimize).observe(document.documentElement, { childList: true, subtree: true });
-        addEventListener("DOMContentLoaded", optimize, { once: true });
-        addEventListener("load", optimize, { once: true });
+        const checkReady = () => {
+          if (loaded.size >= TOTAL) markReady();
+        };
+
+        const preloadVideo = (src) => {
+          const video = document.createElement("video");
+          preloaders.push(video);
+          video.src = src;
+          video.muted = true;
+          video.defaultMuted = true;
+          video.playsInline = true;
+          video.loop = true;
+          video.preload = "auto";
+          video.addEventListener("loadeddata", () => {
+            loaded.add(src);
+            checkReady();
+          }, { once: true });
+          video.addEventListener("canplay", () => {
+            loaded.add(src);
+            checkReady();
+          }, { once: true });
+          video.load();
+        };
+
+        urls.forEach(preloadVideo);
+
+        const normalizeWorkVideos = () => {
+          const videos = Array.from(document.querySelectorAll("#work video"));
+          if (!videos.length) return;
+
+          videos.forEach((video, index) => {
+            const videoNumber = (index % TOTAL) + 1;
+            const src = `/work/video-${String(videoNumber).padStart(2, "0")}.mp4?v=${VERSION}`;
+            const source = video.querySelector("source");
+
+            video.muted = true;
+            video.defaultMuted = true;
+            video.playsInline = true;
+            video.loop = true;
+            video.preload = "auto";
+            video.style.transform = "translateZ(0)";
+            video.style.backfaceVisibility = "hidden";
+            video.style.willChange = "transform";
+
+            if (source && source.getAttribute("src") !== src) {
+              source.setAttribute("src", src);
+              video.load();
+            } else if (!source && video.getAttribute("src") !== src) {
+              video.setAttribute("src", src);
+              video.load();
+            }
+
+            if (ready) video.play().catch(() => {});
+          });
+        };
+
+        const observer = new MutationObserver(normalizeWorkVideos);
+        observer.observe(document.documentElement, { childList: true, subtree: true });
+        addEventListener("DOMContentLoaded", normalizeWorkVideos, { once: true });
+        addEventListener("load", normalizeWorkVideos, { once: true });
+
+        setTimeout(() => {
+          if (!ready) {
+            document.body.classList.add("work-videos-timeout");
+            normalizeWorkVideos();
+          }
+        }, 5500);
       })();
     </script>
 
