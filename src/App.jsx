@@ -102,31 +102,29 @@ const faqs = [
   ["¿Pueden usar mi estilo actual?", "Sí. Podemos mantener tu tono y mejorarlo, o construir una identidad nueva desde cero."],
 ];
 
-function MiniCard({ text, i }) {
+function MiniCard({ src, i }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 25, rotate: i % 2 === 0 ? -2 : 2 }}
       whileInView={{ opacity: 1, y: 0, rotate: i % 2 === 0 ? -2 : 2 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: i * 0.03 }}
-      className="relative h-32 min-w-[220px] overflow-hidden rounded-[26px] border border-white/10 bg-[#101010] p-3 shadow-[0_0_80px_rgba(255,90,0,0.10)] transition-all duration-500 hover:-translate-y-2 hover:border-white/15 hover:shadow-[0_0_100px_rgba(255,90,0,0.16)] sm:h-36 sm:min-w-[240px] md:h-44 md:min-w-[300px]"
+      className="relative h-[220px] min-w-[140px] overflow-hidden rounded-[26px] border border-white/10 bg-[#101010] shadow-[0_0_80px_rgba(255,90,0,0.10)] transition-all duration-500 hover:-translate-y-2 hover:border-white/15 hover:shadow-[0_0_100px_rgba(255,90,0,0.16)] sm:h-[300px] sm:min-w-[180px] md:h-[420px] md:min-w-[240px]"
     >
-      <div className="absolute inset-0 bg-white/5" />
-      <div className="absolute inset-x-8 top-8 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
-      <div className="relative flex h-full flex-col justify-between rounded-[24px] border border-white/10 bg-[#0b0b0b] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-sm">
-        <div className="flex items-center justify-between text-xs font-bold uppercase tracking-[0.18em] text-white/60">
-          <span>HOOKD</span>
-          <span>SHORT</span>
-        </div>
-        <h3 className="max-w-[240px] text-lg font-extrabold leading-[.9] tracking-[-0.06em] sm:text-xl md:text-2xl">
-          {text}
-        </h3>
-        <div className="flex items-center gap-2 text-sm text-white/60">
-          <span className="flex h-7 w-7 items-center justify-center rounded-full border border-white/10 bg-[#ff5a00] text-white">
-            <Play className="h-3 w-3 fill-white" />
-          </span>
-          00:31
-        </div>
+      <img
+        src={src}
+        alt=""
+        className="h-full w-full object-cover"
+        draggable={false}
+      />
+
+      <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+
+      <div className="absolute bottom-3 left-3 flex items-center gap-2 rounded-full border border-white/10 bg-black/50 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-white backdrop-blur-md">
+        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#ff5a00]">
+          <Play className="h-2.5 w-2.5 fill-white text-white" />
+        </span>
+        HOOKD
       </div>
     </motion.div>
   );
