@@ -20,15 +20,12 @@ const fadeUp = {
   visible: { opacity: 1, y: 0 },
 };
 
-const thumbnails = [
-  "LA IDEA QUE CAMBIÓ TODO",
-  "NO ESTÁS CRECIENDO POR ESTO",
-  "EL MÉTODO DE LOS 3 SEGUNDOS",
-  "DE 0 A 1M VIEWS",
-  "POR QUÉ TU CONTENIDO NO RETIENE",
-  "ESTO HACE QUE LA GENTE SE QUEDE",
-  "GUIONES QUE VENDEN",
-  "EL HOOK PERFECTO",
+const workGifs = [
+  "/work/video-01.gif",
+  "/work/video-03.gif",
+  "/work/video-04.gif",
+  "/work/video-05.gif",
+  "/work/video-07.gif",
 ];
 
 const problems = [
