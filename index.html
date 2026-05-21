@@ -11,16 +11,60 @@
     <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
     <link rel="manifest" href="/favicon/site.webmanifest" />
 
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
     <link rel="preload" href="/assets/logo.png" as="image" fetchpriority="high" />
 
-    <link rel="preload" href="/work/video-01.mp4?v=4" as="video" type="video/mp4" fetchpriority="high" />
-    <link rel="preload" href="/work/video-02.mp4?v=4" as="video" type="video/mp4" fetchpriority="high" />
-    <link rel="preload" href="/work/video-03.mp4?v=4" as="video" type="video/mp4" fetchpriority="high" />
-    <link rel="preload" href="/work/video-04.mp4?v=4" as="video" type="video/mp4" fetchpriority="high" />
-    <link rel="preload" href="/work/video-05.mp4?v=4" as="video" type="video/mp4" fetchpriority="high" />
-    <link rel="preload" href="/work/video-06.mp4?v=4" as="video" type="video/mp4" />
+    <link rel="preload" href="/work/video-01.mp4?v=3" as="video" type="video/mp4" fetchpriority="high" />
+    <link rel="preload" href="/work/video-02.mp4?v=3" as="video" type="video/mp4" fetchpriority="high" />
+    <link rel="preload" href="/work/video-03.mp4?v=3" as="video" type="video/mp4" fetchpriority="high" />
+
+    <script>
+      (() => {
+        const criticalVideos = [
+          "/work/video-01.mp4?v=3",
+          "/work/video-02.mp4?v=3",
+          "/work/video-03.mp4?v=3"
+        ];
+
+        criticalVideos.forEach((src) => {
+          const video = document.createElement("video");
+          video.src = src;
+          video.muted = true;
+          video.defaultMuted = true;
+          video.loop = true;
+          video.playsInline = true;
+          video.preload = "auto";
+          video.load();
+        });
+
+        const optimizeVideos = () => {
+          const videos = Array.from(document.querySelectorAll(".work-card video"));
+          videos.forEach((video, index) => {
+            video.muted = true;
+            video.defaultMuted = true;
+            video.playsInline = true;
+            video.preload = index < 6 ? "auto" : "metadata";
+            video.playbackRate = 1;
+            video.style.transform = "translateZ(0)";
+            video.style.backfaceVisibility = "hidden";
+            if (index < 6) {
+              video.load();
+              video.play().catch(() => {});
+            }
+          });
+        };
+
+        if ("requestIdleCallback" in window) {
+          requestIdleCallback(optimizeVideos, { timeout: 800 });
+        } else {
+          setTimeout(optimizeVideos, 500);
+        }
+
+        new MutationObserver(optimizeVideos).observe(document.documentElement, {
+          childList: true,
+          subtree: true
+        });
+      })();
+    </script>
 
     <title>HOOKD Method</title>
   </head>
