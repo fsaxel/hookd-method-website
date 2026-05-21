@@ -398,14 +398,14 @@ export default function App() {
           </motion.div>
         </section>
 
-        <section id="work" className="relative py-2 md:py-4">
-          <div className="flex w-max animate-[marquee_38s_linear_infinite] gap-5 px-5 will-change-transform md:gap-7">
-            {[...localizedThumbnails, ...localizedThumbnails].map((t, i) => (
-              <MiniCard key={`${t}-${i}`} text={t} i={i} />
-            ))}
-          </div>
-        </section>
-
+<section id="work" className="relative py-2 md:py-4 overflow-hidden">
+  <div className="flex w-max animate-[marquee_38s_linear_infinite] gap-5 px-5 md:gap-7 will-change-transform">
+    {[...workGifs, ...workGifs, ...workGifs].map((gif, i) => (
+      <MiniCard key={`${gif}-${i}`} src={gif} i={i} />
+    ))}
+  </div>
+</section>
+        
         <section className="mx-auto max-w-7xl px-5 py-10 md:px-8">
           <div className="rounded-[28px] border border-white/10 bg-[#101010] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_30px_120px_rgba(255,255,255,0.07)] backdrop-blur md:p-4">
             <div className="grid gap-4 lg:grid-cols-[1.05fr_.95fr] lg:items-stretch">
