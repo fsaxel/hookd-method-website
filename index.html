@@ -5,139 +5,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#050505" />
     <meta name="description" content="HOOKD Method — content systems for creators, brands and businesses." />
-
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
     <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
     <link rel="manifest" href="/favicon/site.webmanifest" />
-
     <link rel="preload" href="/assets/logo.png" as="image" fetchpriority="high" />
-    <link rel="preload" href="/work/video-01.mp4?v=5" as="video" type="video/mp4" fetchpriority="high" />
-    <link rel="preload" href="/work/video-02.mp4?v=5" as="video" type="video/mp4" fetchpriority="high" />
-    <link rel="preload" href="/work/video-03.mp4?v=5" as="video" type="video/mp4" fetchpriority="high" />
-    <link rel="preload" href="/work/video-04.mp4?v=5" as="video" type="video/mp4" fetchpriority="high" />
-    <link rel="preload" href="/work/video-05.mp4?v=5" as="video" type="video/mp4" fetchpriority="high" />
-    <link rel="preload" href="/work/video-06.mp4?v=5" as="video" type="video/mp4" fetchpriority="high" />
-    <link rel="preload" href="/work/video-07.mp4?v=5" as="video" type="video/mp4" fetchpriority="high" />
-    <link rel="preload" href="/work/video-08.mp4?v=5" as="video" type="video/mp4" fetchpriority="high" />
-    <link rel="preload" href="/work/video-09.mp4?v=5" as="video" type="video/mp4" fetchpriority="high" />
-    <link rel="preload" href="/work/video-10.mp4?v=5" as="video" type="video/mp4" fetchpriority="high" />
+    <title>HOOKD Method</title>
 
     <style>
-      #work {
-        opacity: 0;
-        transition: opacity 260ms ease;
-      }
-
-      body.work-videos-ready #work,
-      body.work-videos-timeout #work {
-        opacity: 1;
-      }
-
-      .marquee-track {
-        animation-duration: 54s !important;
-      }
-
-      @media (max-width: 767px) {
-        .marquee-track {
-          animation-duration: 44s !important;
-        }
-      }
+      #work .marquee-track{animation:none!important;transform:none!important;width:100%!important;max-width:1280px;margin:0 auto;justify-content:center;overflow:visible;padding:0 56px}
+      #work .work-card{transition:opacity .25s ease,transform .25s ease,filter .25s ease!important}
+      #work .work-hidden{display:none!important}
+      #work .work-main{opacity:1}
+      #work .work-edge{opacity:.35;filter:brightness(.5) blur(.3px);transform:scale(.88)!important;pointer-events:none}
+      .work-nav-button{position:absolute;top:50%;z-index:60;height:46px;width:46px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(0,0,0,.7);color:#fff;transform:translateY(-50%);cursor:pointer}
+      .work-nav-button.prev{left:20px}.work-nav-button.next{right:20px}
+      @media(max-width:767px){#work .work-edge{display:none!important}#work .marquee-track{padding:0 38px!important}}
     </style>
 
     <script>
-      (() => {
-        const VERSION = "5";
-        const TOTAL = 10;
-        const urls = Array.from({ length: TOTAL }, (_, i) => `/work/video-${String(i + 1).padStart(2, "0")}.mp4?v=${VERSION}`);
-        const loaded = new Set();
-        const preloaders = [];
-        let ready = false;
+      (()=>{
+        const TOTAL=10;
+        let booted=false;
 
-        const markReady = () => {
-          if (ready) return;
-          ready = true;
-          document.body.classList.add("work-videos-ready");
-          document.querySelectorAll("#work video").forEach((video) => {
-            video.muted = true;
-            video.defaultMuted = true;
-            video.playsInline = true;
-            video.loop = true;
-            video.play().catch(() => {});
-          });
+        const preload=(src)=>{
+          const v=document.createElement('video');
+          v.src=src;
+          v.muted=true;
+          v.playsInline=true;
+          v.preload='auto';
+          v.load();
         };
 
-        const checkReady = () => {
-          if (loaded.size >= TOTAL) markReady();
+        ['/work/video-01.mp4?v=5','/work/video-02.mp4?v=5','/work/video-03.mp4?v=5'].forEach(preload);
+
+        const init=()=>{
+          if(booted)return;
+          const section=document.querySelector('#work');
+          const track=document.querySelector('#work .marquee-track');
+          if(!section||!track)return;
+
+          const cards=[...track.querySelectorAll('.work-card')].slice(0,TOTAL);
+          if(cards.length<3)return;
+          booted=true;
+
+          track.innerHTML='';
+          cards.forEach(c=>track.appendChild(c));
+
+          const prev=document.createElement('button');
+          prev.className='work-nav-button prev';
+          prev.innerHTML='‹';
+
+          const next=document.createElement('button');
+          next.className='work-nav-button next';
+          next.innerHTML='›';
+
+          section.appendChild(prev);
+          section.appendChild(next);
+
+          let current=0;
+          const wrap=(n)=>((n%TOTAL)+TOTAL)%TOTAL;
+
+          const apply=()=>{
+            const visible=new Map([
+              [wrap(current-1),'work-edge'],
+              [wrap(current),'work-main'],
+              [wrap(current+1),'work-main'],
+              [wrap(current+2),'work-main'],
+              [wrap(current+3),'work-edge']
+            ]);
+
+            cards.forEach((card,index)=>{
+              card.classList.remove('work-hidden','work-main','work-edge');
+              const role=visible.get(index);
+              if(!role){
+                card.classList.add('work-hidden');
+                return;
+              }
+              card.classList.add(role);
+
+              const video=card.querySelector('video');
+              if(video){
+                video.preload=role==='work-main'?'auto':'metadata';
+                video.play().catch(()=>{});
+              }
+            });
+          };
+
+          prev.onclick=()=>{current=wrap(current-1);apply();};
+          next.onclick=()=>{current=wrap(current+1);apply();};
+
+          apply();
+
+          setTimeout(()=>{
+            for(let i=4;i<=10;i++) preload(`/work/video-${String(i).padStart(2,'0')}.mp4?v=5`)
+          },2000);
         };
 
-        const preloadVideo = (src) => {
-          const video = document.createElement("video");
-          preloaders.push(video);
-          video.src = src;
-          video.muted = true;
-          video.defaultMuted = true;
-          video.playsInline = true;
-          video.loop = true;
-          video.preload = "auto";
-          video.addEventListener("loadeddata", () => {
-            loaded.add(src);
-            checkReady();
-          }, { once: true });
-          video.addEventListener("canplay", () => {
-            loaded.add(src);
-            checkReady();
-          }, { once: true });
-          video.load();
-        };
-
-        urls.forEach(preloadVideo);
-
-        const normalizeWorkVideos = () => {
-          const videos = Array.from(document.querySelectorAll("#work video"));
-          if (!videos.length) return;
-
-          videos.forEach((video, index) => {
-            const videoNumber = (index % TOTAL) + 1;
-            const src = `/work/video-${String(videoNumber).padStart(2, "0")}.mp4?v=${VERSION}`;
-            const source = video.querySelector("source");
-
-            video.muted = true;
-            video.defaultMuted = true;
-            video.playsInline = true;
-            video.loop = true;
-            video.preload = "auto";
-            video.style.transform = "translateZ(0)";
-            video.style.backfaceVisibility = "hidden";
-            video.style.willChange = "transform";
-
-            if (source && source.getAttribute("src") !== src) {
-              source.setAttribute("src", src);
-              video.load();
-            } else if (!source && video.getAttribute("src") !== src) {
-              video.setAttribute("src", src);
-              video.load();
-            }
-
-            if (ready) video.play().catch(() => {});
-          });
-        };
-
-        const observer = new MutationObserver(normalizeWorkVideos);
-        observer.observe(document.documentElement, { childList: true, subtree: true });
-        addEventListener("DOMContentLoaded", normalizeWorkVideos, { once: true });
-        addEventListener("load", normalizeWorkVideos, { once: true });
-
-        setTimeout(() => {
-          if (!ready) {
-            document.body.classList.add("work-videos-timeout");
-            normalizeWorkVideos();
-          }
-        }, 5500);
+        new MutationObserver(init).observe(document.documentElement,{childList:true,subtree:true});
+        addEventListener('DOMContentLoaded',init,{once:true});
       })();
     </script>
-
-    <title>HOOKD Method</title>
   </head>
   <body>
     <div id="root"></div>
