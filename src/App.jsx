@@ -399,7 +399,7 @@ export default function App() {
         </section>
 
 <section id="work" className="relative py-2 md:py-4 overflow-hidden">
-  <div className="flex w-max animate-[marquee_38s_linear_infinite] gap-5 px-5 md:gap-7 will-change-transform">
+  <div className="marquee-track flex w-max gap-5 px-5 md:gap-7 will-change-transform">
     {[...workGifs, ...workGifs, ...workGifs].map((gif, i) => (
       <MiniCard key={`${gif}-${i}`} src={gif} i={i} />
     ))}
