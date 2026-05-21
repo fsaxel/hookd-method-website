@@ -118,7 +118,7 @@ function MiniCard({ src, i }) {
         draggable={false}
       />
 
-      <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+      <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
 
       <div className="absolute bottom-3 left-3 flex items-center gap-2 rounded-full border border-white/10 bg-black/50 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-white backdrop-blur-md">
         <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#ff5a00]">
