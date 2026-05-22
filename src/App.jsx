@@ -30,11 +30,12 @@ const faqs = [
   ["¿Pueden usar mi estilo actual?", "Sí. Podemos mantener tu tono y mejorarlo, o construir una identidad nueva desde cero."],
 ];
 
-function MiniCard({ src, i, position, activeIndex }) {
+const wrapIndex = (index) => (index + workVideos.length) % workVideos.length;
+
+function MiniCard({ src, position, shouldLoad, shouldPreload }) {
   const videoRef = React.useRef(null);
   const isActive = position === 0;
   const isSide = Math.abs(position) === 1;
-  const shouldLoad = Math.abs(position) <= 2;
 
   React.useEffect(() => {
     const video = videoRef.current;
@@ -44,20 +45,31 @@ function MiniCard({ src, i, position, activeIndex }) {
     video.defaultMuted = true;
     video.playsInline = true;
 
+    let canPlayHandler;
     const syncPlayback = () => {
       if (isActive && document.visibilityState === "visible") {
-        video.play().catch(() => {});
+        if (video.readyState >= 3) {
+          video.play().catch(() => {});
+        } else {
+          canPlayHandler = () => video.play().catch(() => {});
+          video.addEventListener("canplay", canPlayHandler, { once: true });
+        }
       } else {
         video.pause();
       }
     };
 
-    video.load();
+    if (!video.dataset.loadedSrc || video.dataset.loadedSrc !== src) {
+      video.dataset.loadedSrc = src;
+      video.load();
+    }
+
     syncPlayback();
     document.addEventListener("visibilitychange", syncPlayback);
 
     return () => {
       document.removeEventListener("visibilitychange", syncPlayback);
+      if (canPlayHandler) video.removeEventListener("canplay", canPlayHandler);
       video.pause();
     };
   }, [isActive, shouldLoad, src]);
@@ -71,7 +83,7 @@ function MiniCard({ src, i, position, activeIndex }) {
 
   return (
     <div className={`work-card ${placementClass}`} style={positionStyle} aria-hidden={!isActive}>
-      <video key={`${src}-${activeIndex}`} ref={videoRef} muted loop playsInline preload={isActive ? "auto" : shouldLoad ? "metadata" : "none"} className="absolute inset-0 z-10 h-full w-full object-cover opacity-100" aria-label="HOOKD Method work sample">
+      <video ref={videoRef} muted loop playsInline preload={isActive || shouldPreload ? "auto" : shouldLoad ? "metadata" : "none"} className="absolute inset-0 z-10 h-full w-full object-cover opacity-100" aria-label="HOOKD Method work sample">
         {shouldLoad && <source src={src} type="video/mp4" />}
       </video>
       <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/24 via-transparent to-transparent" />
@@ -89,6 +101,8 @@ function SectionTitle({ eyebrow, title, text, center = false }) {
 function WorkCarousel() {
   const [activeIndex, setActiveIndex] = React.useState(0);
   const [isPaused, setIsPaused] = React.useState(false);
+  const [loadedIndexes, setLoadedIndexes] = React.useState(() => new Set([0, 1, workVideos.length - 1]));
+  const preloaderRef = React.useRef(new Map());
 
   const move = React.useCallback((direction) => {
     setActiveIndex((current) => (current + direction + workVideos.length) % workVideos.length);
@@ -99,6 +113,27 @@ function WorkCarousel() {
     const interval = window.setInterval(() => move(1), 4200);
     return () => window.clearInterval(interval);
   }, [isPaused, move]);
+
+  React.useEffect(() => {
+    const priorityIndexes = [activeIndex, activeIndex + 1, activeIndex - 1, activeIndex + 2].map(wrapIndex);
+    setLoadedIndexes((current) => {
+      const next = new Set(current);
+      priorityIndexes.forEach((index) => next.add(index));
+      return next;
+    });
+
+    priorityIndexes.forEach((index) => {
+      if (preloaderRef.current.has(index)) return;
+      const video = document.createElement("video");
+      video.src = workVideos[index];
+      video.preload = "auto";
+      video.muted = true;
+      video.defaultMuted = true;
+      video.playsInline = true;
+      video.load();
+      preloaderRef.current.set(index, video);
+    });
+  }, [activeIndex]);
 
   const getPosition = (index) => {
     const raw = index - activeIndex;
@@ -116,7 +151,13 @@ function WorkCarousel() {
     >
       <div className="work-stage relative mx-auto h-[300px] w-full max-w-[760px] sm:h-[360px] md:h-[470px]">
         {workVideos.map((video, i) => (
-          <MiniCard key={video} src={video} i={i} position={getPosition(i)} activeIndex={activeIndex} />
+          <MiniCard
+            key={video}
+            src={video}
+            position={getPosition(i)}
+            shouldLoad={loadedIndexes.has(i)}
+            shouldPreload={i === wrapIndex(activeIndex + 1) || i === wrapIndex(activeIndex - 1)}
+          />
         ))}
       </div>
       <button type="button" onClick={() => move(-1)} className="work-nav-button prev" aria-label="Previous video">
@@ -163,7 +204,7 @@ export default function App() {
   const localizedSolutions = isES ? solutions : [
     { icon: TrendingUp, title: "Hooks designed to retain", text: "We turn ideas into strong, simple and direct openings that give viewers a clear reason to stay." },
     { icon: PenLine, title: "Structured scripting", text: "We create pieces with rhythm, progression and payoff. We don't write pretty lines: we build videos that move forward." },
-    { icon: Film, title: "Ready-to-post editing", text: "Subtitles, cuts, motion and visual direction so every piece feels native of TikTok, Reels and Shorts." },
+    { icon: Film, title: "Ready-to-post editing", text: "Subtitles, cuts, motion and visual direction so every piece feels native to TikTok, Reels and Shorts." },
   ];
   const localizedPlans = isES ? plans : [
     { name: "Starter", tag: "To start", amount: "8 videos / month", features: ["Initial research", "Short-form scripts", "Vertical editing", "1 revision round"] },
