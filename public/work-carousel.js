@@ -1,10 +1,11 @@
 (() => {
   const TOTAL = 10;
-  const VERSION = '7';
+  const VERSION = '8';
   let ready = false;
   let current = 0;
   let lock = false;
   const cache = [];
+  const initialOrder = [0, 1, 2];
 
   const wrap = (n) => ((n % TOTAL) + TOTAL) % TOTAL;
   const srcFor = (i) => `/work/video-${String(wrap(i) + 1).padStart(2, '0')}.mp4?v=${VERSION}`;
@@ -22,7 +23,7 @@
     video.load();
   };
 
-  [0, 1, 2].forEach(prime);
+  initialOrder.forEach(prime);
 
   const dims = () => isMobile()
     ? { mainW: 158, mainH: 265, sideW: 78, sideH: 142, sideX: 122, hiddenX: 245 }
@@ -46,6 +47,10 @@
       source.setAttribute('src', src);
       video.load();
     }
+    if (!source && video.getAttribute('src') !== src) {
+      video.setAttribute('src', src);
+      video.load();
+    }
     if (active) video.play().catch(() => {});
     else video.pause();
   };
@@ -56,8 +61,9 @@
     const track = document.querySelector('#work .marquee-track');
     if (!section || !track) return;
 
-    const cards = Array.from(track.querySelectorAll('.work-card')).slice(0, TOTAL);
-    if (cards.length < TOTAL) return;
+    const allCards = Array.from(track.querySelectorAll('.work-card'));
+    const cards = allCards.slice(0, TOTAL);
+    if (cards.length < 3) return;
     ready = true;
 
     section.classList.add('hookd-controlled-work');
@@ -89,9 +95,9 @@
         if (i === main) {
           card.classList.add('is-main');
           setVars(card, {
-            '--x': '0px', '--scale': '1', '--opacity': '1', '--rotate': '0deg',
+            '--x': '0px', '--s': '1', '--o': '1', '--r': '0deg',
             '--w': `${d.mainW}px`, '--h': `${d.mainH}px`, '--z': '30',
-            '--filter': 'none', '--overlay': '0'
+            '--filter': 'none', '--pointer': 'auto', '--overlay': '0'
           });
           setupVideo(card, i, true);
           return;
@@ -101,9 +107,9 @@
           const side = i === left ? -1 : 1;
           card.classList.add('is-side');
           setVars(card, {
-            '--x': `${side * d.sideX}px`, '--scale': '.9', '--opacity': isMobile() ? '.28' : '.38', '--rotate': `${side * 1.4}deg`,
+            '--x': `${side * d.sideX}px`, '--s': '.9', '--o': isMobile() ? '.28' : '.38', '--r': `${side * 1.4}deg`,
             '--w': `${d.sideW}px`, '--h': `${d.sideH}px`, '--z': '10',
-            '--filter': 'brightness(.54) saturate(.72)', '--overlay': '.9'
+            '--filter': 'brightness(.54) saturate(.72)', '--pointer': 'none', '--overlay': '.9'
           });
           setupVideo(card, i, false);
           return;
@@ -113,9 +119,9 @@
         const side = Math.abs(rawDistance) > TOTAL / 2 ? -Math.sign(rawDistance) : Math.sign(rawDistance || 1);
         card.classList.add('is-hidden');
         setVars(card, {
-          '--x': `${side * d.hiddenX}px`, '--scale': '.66', '--opacity': '0', '--rotate': `${side * 5}deg`,
+          '--x': `${side * d.hiddenX}px`, '--s': '.66', '--o': '0', '--r': `${side * 5}deg`,
           '--w': `${d.sideW}px`, '--h': `${d.sideH}px`, '--z': '1',
-          '--filter': 'brightness(.35) saturate(.6)', '--overlay': '1'
+          '--filter': 'brightness(.35) saturate(.6)', '--pointer': 'none', '--overlay': '1'
         });
         setupVideo(card, i, false);
       });
@@ -146,5 +152,6 @@
     init();
     if (ready) clearInterval(poll);
   }, 80);
+  addEventListener('DOMContentLoaded', init, { once: true });
   addEventListener('load', init, { once: true });
 })();
