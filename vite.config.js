@@ -9,15 +9,22 @@ function replaceWorkCarousel() {
       const normalizedId = id.replace(/\\/g, "/");
       if (!normalizedId.endsWith("/src/App.jsx")) return null;
 
-      const start = code.indexOf("function WorkCarousel() {");
-      const end = code.indexOf("\nfunction AnimatedStat", start);
+      const helperStart = code.indexOf("const wrapIndex = (index)");
+      const sectionStart = code.indexOf("\nfunction SectionTitle", helperStart);
+      const sourceCode =
+        helperStart === -1 || sectionStart === -1
+          ? code
+          : code.slice(0, helperStart) + code.slice(sectionStart);
+
+      const start = sourceCode.indexOf("function WorkCarousel() {");
+      const end = sourceCode.indexOf("\nfunction AnimatedStat", start);
       if (start === -1 || end === -1) return null;
 
       const nextCode = [
         'import OptimizedWorkCarousel from "./OptimizedWorkCarousel.jsx";\n',
-        code.slice(0, start),
+        sourceCode.slice(0, start),
         "function WorkCarousel() {\n  return <OptimizedWorkCarousel />;\n}\n",
-        code.slice(end),
+        sourceCode.slice(end),
       ]
         .join("")
         .replace(/\n\s*<style>\{`[\s\S]*?`\}<\/style>/, "");
