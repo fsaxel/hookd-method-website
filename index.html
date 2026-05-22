@@ -10,45 +10,10 @@
     <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
     <link rel="manifest" href="/favicon/site.webmanifest" />
     <link rel="preload" href="/assets/logo.png" as="image" fetchpriority="high" />
-    <link rel="preload" href="/work/video-01.mp4?v=12" as="video" type="video/mp4" fetchpriority="high" />
-    <link rel="preload" href="/work/video-02.mp4?v=12" as="video" type="video/mp4" fetchpriority="high" />
-    <link rel="preload" href="/work/video-03.mp4?v=12" as="video" type="video/mp4" fetchpriority="high" />
     <title>HOOKD Method</title>
-
-    <script>
-      window.__HOOKD_WORK_UNLOCK__ = false;
-      (() => {
-        const originalSetAttribute = Element.prototype.setAttribute;
-        Element.prototype.setAttribute = function(name, value) {
-          if (!window.__HOOKD_WORK_UNLOCK__ && this.tagName === 'SOURCE' && name === 'src' && String(value).includes('/work/video-')) {
-            this.dataset.hookdDeferredSrc = value;
-            return;
-          }
-          return originalSetAttribute.call(this, name, value);
-        };
-      })();
-    </script>
-
-    <style>
-      @keyframes hookdFloat { 0%,100%{translate:0 0} 50%{translate:0 -5px} }
-      #work{min-height:330px}
-      #work.hookd-controlled-work{position:relative!important;overflow:hidden!important;padding:24px 0 34px!important}
-      #work.hookd-controlled-work .marquee-track{animation:none!important;transform:none!important;display:block!important;position:relative!important;width:min(100%,760px)!important;max-width:760px!important;height:450px!important;margin:0 auto!important;padding:0!important;overflow:visible!important;will-change:auto!important}
-      #work.hookd-controlled-work .work-card{position:absolute!important;left:50%!important;top:50%!important;min-width:0!important;margin:0!important;width:var(--w,150px)!important;height:var(--h,268px)!important;opacity:var(--o,0)!important;filter:var(--filter,brightness(.45))!important;z-index:var(--z,1)!important;pointer-events:var(--pointer,none)!important;transform:translate3d(calc(-50% + var(--x,0px)),-50%,0) scale(var(--s,.7)) rotate(var(--r,0deg))!important;transition:transform 860ms cubic-bezier(.16,1,.3,1),opacity 700ms cubic-bezier(.16,1,.3,1),filter 700ms cubic-bezier(.16,1,.3,1),width 860ms cubic-bezier(.16,1,.3,1),height 860ms cubic-bezier(.16,1,.3,1),box-shadow 700ms ease!important;will-change:transform,opacity,filter,width,height!important;backface-visibility:hidden!important}
-      #work.hookd-controlled-work .work-card.is-main{animation:hookdFloat 6s ease-in-out infinite;box-shadow:0 28px 100px rgba(255,90,0,.18),0 0 0 1px rgba(255,255,255,.08)!important}
-      #work.hookd-controlled-work .work-card.is-side{box-shadow:inset 0 0 95px rgba(0,0,0,.82),0 18px 60px rgba(0,0,0,.32)!important}
-      #work.hookd-controlled-work .work-card video{transform:translateZ(0)!important;backface-visibility:hidden!important;background:#050505!important}
-      #work.hookd-controlled-work .work-card::after{content:"";position:absolute;inset:0;z-index:25;pointer-events:none;opacity:var(--overlay,0);background:radial-gradient(circle at center,transparent 40%,rgba(0,0,0,.34) 100%);transition:opacity 520ms ease}
-      .work-nav-button{position:absolute;top:50%;z-index:90;height:40px;width:40px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(10,10,10,.76);color:#fff;transform:translateY(-50%);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:28px;line-height:1;box-shadow:0 18px 48px rgba(0,0,0,.42),0 0 36px rgba(255,90,0,.11);backdrop-filter:blur(16px);transition:transform 220ms ease,border-color 220ms ease,background 220ms ease,color 220ms ease}
-      .work-nav-button:hover{transform:translateY(-50%) scale(1.1);border-color:rgba(255,90,0,.55);background:#ff5a00;color:#050505}
-      .work-nav-button.prev{left:calc(50% - 260px)}
-      .work-nav-button.next{right:calc(50% - 260px)}
-      @media(max-width:767px){#work{min-height:300px}#work.hookd-controlled-work .marquee-track{width:min(100%,360px)!important;height:285px!important}.work-nav-button{height:36px;width:36px;font-size:24px}.work-nav-button.prev{left:10px}.work-nav-button.next{right:10px}}
-    </style>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-    <script src="/work-carousel.js?v=12" defer></script>
   </body>
 </html>
