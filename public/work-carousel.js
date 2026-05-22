@@ -62,7 +62,12 @@
     if (ready) return;
     const section = document.querySelector('#work');
     const track = document.querySelector('#work .marquee-track');
+    const offers = document.querySelector('#offers');
     if (!section || !track) return;
+
+    if (offers && section.nextElementSibling !== offers) {
+      offers.parentNode.insertBefore(section, offers);
+    }
 
     const cards = Array.from(track.querySelectorAll('.work-card')).slice(0, TOTAL);
     if (cards.length < 3) return;
