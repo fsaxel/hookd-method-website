@@ -46,11 +46,14 @@
     video.loop = true;
     video.preload = active ? 'auto' : 'metadata';
 
-    if (source && source.src !== src) {
-      source.src = src;
-      video.load();
-    } else if (!source && video.src !== src) {
-      video.src = src;
+    if (source) {
+      if (source.dataset.hookdDeferredSrc) delete source.dataset.hookdDeferredSrc;
+      if (source.getAttribute('src') !== src) {
+        source.setAttribute('src', src);
+        video.load();
+      }
+    } else if (video.getAttribute('src') !== src) {
+      video.setAttribute('src', src);
       video.load();
     }
 
@@ -62,12 +65,7 @@
     if (ready) return;
     const section = document.querySelector('#work');
     const track = document.querySelector('#work .marquee-track');
-    const offers = document.querySelector('#offers');
     if (!section || !track) return;
-
-    if (offers && section.nextElementSibling !== offers) {
-      offers.parentNode.insertBefore(section, offers);
-    }
 
     const cards = Array.from(track.querySelectorAll('.work-card')).slice(0, TOTAL);
     if (cards.length < 3) return;
