@@ -9,18 +9,9 @@ const workVideos = Array.from(
 const visibleSlots = [-1, 0, 1];
 const wrapIndex = (index) => (index + workVideos.length) % workVideos.length;
 
-function idle(callback, timeout = 900) {
-  if ("requestIdleCallback" in window) {
-    const id = window.requestIdleCallback(callback, { timeout });
-    return () => window.cancelIdleCallback(id);
-  }
-
-  const id = window.setTimeout(callback, timeout);
-  return () => window.clearTimeout(id);
-}
-
-function VideoCard({ index, slot, source, loaded, active, onSelect }) {
+function VideoCard({ index, slot, source, loaded, active, onReady, onSelect }) {
   const videoRef = React.useRef(null);
+  const eager = active || slot === 1;
 
   React.useEffect(() => {
     const video = videoRef.current;
@@ -66,8 +57,10 @@ function VideoCard({ index, slot, source, loaded, active, onSelect }) {
         muted
         loop
         playsInline
-        preload={active || loaded ? "auto" : "metadata"}
+        preload={eager ? "auto" : "metadata"}
         disablePictureInPicture
+        onLoadedData={() => onReady(index)}
+        onCanPlay={() => onReady(index)}
         className="absolute inset-0 h-full w-full object-cover"
       />
       <span className="owc-scrim" />
@@ -84,46 +77,21 @@ export default function OptimizedWorkCarousel() {
   const [activeIndex, setActiveIndex] = React.useState(0);
   const [paused, setPaused] = React.useState(false);
   const [inView, setInView] = React.useState(false);
-  const [blobUrls, setBlobUrls] = React.useState(() => new Map());
+  const [readyIndexes, setReadyIndexes] = React.useState(() => new Set([0]));
   const stageRef = React.useRef(null);
-  const blobUrlsRef = React.useRef(new Map());
-  const requestsRef = React.useRef(new Map());
 
   const move = React.useCallback((direction) => {
     setActiveIndex((current) => wrapIndex(current + direction));
   }, []);
 
-  const warmVideo = React.useCallback((index) => {
-    const normalizedIndex = wrapIndex(index);
-    if (blobUrlsRef.current.has(normalizedIndex)) {
-      return Promise.resolve(blobUrlsRef.current.get(normalizedIndex));
-    }
-    if (requestsRef.current.has(normalizedIndex)) {
-      return requestsRef.current.get(normalizedIndex);
-    }
-
-    const request = fetch(workVideos[normalizedIndex], {
-      cache: "force-cache",
-      priority: normalizedIndex === activeIndex ? "high" : "low",
-    })
-      .then((response) => {
-        if (!response.ok) throw new Error(`Video ${normalizedIndex + 1} failed to load`);
-        return response.blob();
-      })
-      .then((blob) => {
-        const objectUrl = URL.createObjectURL(blob);
-        blobUrlsRef.current.set(normalizedIndex, objectUrl);
-        setBlobUrls(new Map(blobUrlsRef.current));
-        return objectUrl;
-      })
-      .catch(() => null)
-      .finally(() => {
-        requestsRef.current.delete(normalizedIndex);
-      });
-
-    requestsRef.current.set(normalizedIndex, request);
-    return request;
-  }, [activeIndex]);
+  const markReady = React.useCallback((index) => {
+    setReadyIndexes((current) => {
+      if (current.has(index)) return current;
+      const next = new Set(current);
+      next.add(index);
+      return next;
+    });
+  }, []);
 
   React.useEffect(() => {
     const stage = stageRef.current;
@@ -144,17 +112,28 @@ export default function OptimizedWorkCarousel() {
   React.useEffect(() => {
     if (!inView) return undefined;
 
-    const criticalIndexes = [activeIndex, activeIndex + 1, activeIndex - 1, activeIndex + 2].map(wrapIndex);
-    criticalIndexes.forEach(warmVideo);
+    const preloadIndexes = [activeIndex, activeIndex + 1, activeIndex - 1].map(wrapIndex);
+    const links = preloadIndexes.map((index) => {
+      const href = workVideos[index];
+      const existing = document.head.querySelector(`link[data-work-video="${href}"]`);
+      if (existing) return existing;
 
-    return idle(() => {
-      workVideos.forEach((_, index) => {
-        if (!criticalIndexes.includes(index)) {
-          window.setTimeout(() => warmVideo(index), index * 120);
-        }
+      const link = document.createElement("link");
+      link.rel = "preload";
+      link.as = "video";
+      link.type = "video/mp4";
+      link.href = href;
+      link.dataset.workVideo = href;
+      document.head.appendChild(link);
+      return link;
+    });
+
+    return () => {
+      links.forEach((link) => {
+        if (link.dataset.workVideo !== workVideos[activeIndex]) link.remove();
       });
-    }, 1200);
-  }, [activeIndex, inView, warmVideo]);
+    };
+  }, [activeIndex, inView]);
 
   React.useEffect(() => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -164,17 +143,13 @@ export default function OptimizedWorkCarousel() {
     return () => window.clearInterval(interval);
   }, [inView, move, paused]);
 
-  React.useEffect(() => () => {
-    blobUrlsRef.current.forEach((objectUrl) => URL.revokeObjectURL(objectUrl));
-  }, []);
-
   const cards = visibleSlots.map((slot) => {
     const index = wrapIndex(activeIndex + slot);
     return {
       index,
       slot,
-      source: blobUrls.get(index) || workVideos[index],
-      loaded: blobUrls.has(index),
+      source: workVideos[index],
+      loaded: readyIndexes.has(index),
       active: slot === 0,
     };
   });
@@ -191,6 +166,7 @@ export default function OptimizedWorkCarousel() {
           <VideoCard
             key={`${card.slot}-${card.index}`}
             {...card}
+            onReady={markReady}
             onSelect={() => setActiveIndex(card.index)}
           />
         ))}
