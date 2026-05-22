@@ -68,7 +68,7 @@ function VideoCard({ index, slot, source, loaded, active, onReady, onSelect }) {
         <Play className="h-2.5 w-2.5 fill-white text-white" />
         HOOKD.
       </span>
-      {!active && !loaded && <span className="owc-loader" />}
+      {!loaded && <span className="owc-loader" />}
     </button>
   );
 }
@@ -139,9 +139,11 @@ export default function OptimizedWorkCarousel() {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (paused || reduceMotion || !inView) return undefined;
 
-    const interval = window.setInterval(() => move(1), 4800);
+    const interval = window.setInterval(() => {
+      if (readyIndexes.has(wrapIndex(activeIndex + 1))) move(1);
+    }, 4800);
     return () => window.clearInterval(interval);
-  }, [inView, move, paused]);
+  }, [activeIndex, inView, move, paused, readyIndexes]);
 
   const cards = visibleSlots.map((slot) => {
     const index = wrapIndex(activeIndex + slot);
